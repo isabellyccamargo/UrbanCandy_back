@@ -6,7 +6,7 @@ async function buscaTodasCategorias() {
     return categorias;
 }
 
-async function buscaCategoriaPorId() {
+async function buscaCategoriaPorId( id:number ) {
    const categoria = await categoriaRepositorio.buscaCategoriaPorId();
 
     return categoria;

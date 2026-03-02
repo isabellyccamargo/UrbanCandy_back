@@ -1,23 +1,24 @@
-import categoriaServico from "../servico/categoriaServico.js";
+import produtoServico from "../servico/produtoServico.js";
+import { type Request, type Response } from "express";
 
-async function buscaTodasCategorias(req, res) {
+async function buscaTodosProdutos(req: Request, res: Response) {
     try {
-        const categorias = await categoriaServico.buscaTodasCategorias();
-        return res.status(200).json({categorias});
+        const produtos = await produtoServico.buscaTodosProdutos();
+        return res.status(200).json({produtos});
     } catch (error) {
         return res.status(400).json({ error: "Erro ao buscar os produtos" });
     }
 }
 
-async function buscaCategoriaPorId(req, res) {
+async function buscaProdutoPorId(req: Request, res: Response) {
     try {
         return res.status(200).json({ message: "Buscando o produto por ID" });
     } catch (error) {
-        return res.status(400).json({error: error.message});
+        return res.status(400).json({});
     }
 }
 
-async function salvaCategoria(req, res) {
+async function salvaProduto(req: Request, res: Response) {
     try {
         return res.status(201).json({ message: "Salvando produto" });
     } catch (error) {
@@ -25,7 +26,7 @@ async function salvaCategoria(req, res) {
     }  
 }
 
-async function editaCategoria(req, res) {
+async function editaProduto(req: Request, res: Response) {
     try {
         return res.status(201).json({ message: "Editando produto" });
     } catch (error) {
@@ -33,7 +34,7 @@ async function editaCategoria(req, res) {
     }
 }
 
-async function excluiCategoria(req, res) {
+async function excluiProduto(req: Request, res: Response) {
     try {
         return res.status(201).json({ message: "Excluindo produto" });
     } catch (error) {
@@ -42,9 +43,9 @@ async function excluiCategoria(req, res) {
 }
 
 export default {
-    buscaTodasCategorias,
-    buscaCategoriaPorId,
-    salvaCategoria,
-    editaCategoria,
-    excluiCategoria
+    buscaTodosProdutos,
+    buscaProdutoPorId,
+    salvaProduto,
+    editaProduto,
+    excluiProduto
 }

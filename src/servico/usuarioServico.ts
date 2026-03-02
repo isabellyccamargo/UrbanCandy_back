@@ -6,7 +6,7 @@ async function buscaTodosUsuarios() {
     return usuarios;
 };
 
-async function buscaUsuarioPorId() {
+async function buscaUsuarioPorId(id: number) {
     const usuario = await usuarioRepositorio.buscaUsuarioPorId();
 
     return usuario;

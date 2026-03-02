@@ -6,7 +6,7 @@ async function buscaTodosProdutos() {
     return produtos;
 }
 
-async function buscaProdutoPorId() {
+async function buscaProdutoPorId(id: number) {
    const produto = await produtoRepositorio.buscaProdutoPorId();
 
     return produto;
