@@ -1,51 +1,70 @@
 import { type Request, type Response } from "express";
 import categoriaServico from "../servico/categoriaServico.js";
 
-async function buscaTodasCategorias(req: Request, res: Response) {
-    try {
-        const categorias = await categoriaServico.buscaTodasCategorias();
-        return res.status(200).json({ categorias });
-    } catch (error: any) {
-        return res.status(400).json({ error: "Erro ao buscar as categorias" });
+class categoriaControlador {
+
+    static async criarCategoria(req: Request, res: Response) {
+        try {
+            const { nome_categoria } = req.body;
+            const servico = categoriaServico;
+            const novaCategoria = await servico.criarCategoria(nome_categoria);
+
+            res.status(201).send(novaCategoria);
+        } catch (error: unknown) {
+            const mensagem = error instanceof Error ? error.message : "Erro ao criar categoria";
+            res.status(400).send({ mensagem });
+        }
+    }
+
+    static async buscarTodasCategorias(req: Request, res: Response) {
+        try {
+            const servico = categoriaServico;
+            const categorias = await servico.buscarTodasCategorias();
+            res.send(categorias);
+        } catch (error: unknown) {
+            res.status(500).send({ mensagem: "Erro ao buscar categorias." });
+        }
+    }
+
+    static async buscarCategroiaPorId(req: Request, res: Response) {
+        try {
+            const { id } = req.params; 
+            const servico = categoriaServico;
+            const categoria = await servico.buscarCategroiaPorId(Number(id));
+            res.send(categoria);
+        } catch (error: unknown) {
+            const mensagem = error instanceof Error ? error.message : "Categoria não encontrada";
+            res.status(404).send({ mensagem });
+        }
+    }
+
+    static async excluirCategoria(req: Request, res: Response) {
+        try {
+            const { id_categoria} = req.params;
+            const servico = categoriaServico;
+
+            await servico.excluirCategoria(Number(id_categoria));
+            res.status(204).send(); 
+        } catch (error: unknown) {
+            const mensagem = error instanceof Error ? error.message : "Erro ao excluir categoria";
+            res.status(400).send({ mensagem });
+        }
+    }
+
+    static async atualizarCategoria(req: Request, res: Response) {
+        try {
+            const { id_categoria } = req.params; 
+            const { nome_categoria } = req.body;
+            const servico = categoriaServico;
+
+            await servico.atualizarCategoria(Number(id_categoria), nome_categoria);
+            
+            res.send({ mensagem: "Categoria atualizada com sucesso!" });
+        } catch (error: unknown) {
+            const mensagem = error instanceof Error ? error.message : "Erro ao atualizar categoria";
+            res.status(400).send({ mensagem });
+        }
     }
 }
 
-async function buscaCategoriaPorId(req: Request, res: Response) {
-    try {
-        return res.status(200).json({ message: "Buscando a categoria por ID" });
-    } catch (error: any) {
-        return res.status(400).json({ error: error.message });
-    }
-}
-
-async function salvaCategoria(req: Request, res: Response) {
-    try {
-        return res.status(201).json({ message: "Salvando categoria" });
-    } catch (error: any) {
-        return res.status(400).json({ error: "Erro ao salvar categoria" });
-    }  
-}
-
-async function editaCategoria(req: Request, res: Response) {
-    try {
-        return res.status(201).json({ message: "Editando categoria" });
-    } catch (error: any) {
-        return res.status(400).json({ error: "Erro ao editar categoria" });
-    }
-}
-
-async function excluiCategoria(req: Request, res: Response) {
-    try {
-        return res.status(201).json({ message: "Excluindo categoria" });
-    } catch (error: any) {
-        return res.status(400).json({ error: "Erro ao excluir categoria" });
-    }
-}
-
-export default {
-    buscaTodasCategorias,
-    buscaCategoriaPorId,
-    salvaCategoria,
-    editaCategoria,
-    excluiCategoria
-};
+export default categoriaControlador;

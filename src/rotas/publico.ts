@@ -17,15 +17,15 @@ rotas.put("/produto/editar", produtoControlador.editaProduto);
 rotas.delete("/produto/excluir", produtoControlador.excluiProduto);
 
 // CATEGORIA
-rotas.get("/categoria/listar", categoriaControlador.buscaTodasCategorias);
+rotas.get("/categoria/listar", categoriaControlador.buscarTodasCategorias);
 
-rotas.get("/categoria/listarPorId", categoriaControlador.buscaCategoriaPorId);
+rotas.get("/categoria/listarPorId", categoriaControlador.buscarCategroiaPorId);
 
-rotas.post("/categoria/salvar", categoriaControlador.salvaCategoria);
+rotas.post("/categoria/salvar", categoriaControlador.criarCategoria);
 
-rotas.put("/categoria/editar", categoriaControlador.editaCategoria);
+rotas.put("/categoria/editar/:id_categoria", categoriaControlador.atualizarCategoria);
 
-rotas.delete("/categoria/excluir", categoriaControlador.excluiCategoria);
+rotas.delete("/categoria/excluir/:id_categoria", categoriaControlador.excluirCategoria);
 
 // USUÁRIO
 rotas.get("/usuario/listar", usuarioControlador.buscaTodosUsuarios);

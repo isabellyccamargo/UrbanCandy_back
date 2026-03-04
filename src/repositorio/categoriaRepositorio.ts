@@ -1,42 +1,33 @@
-async function buscaTodasCategorias() {
+import categoria from "../modelo/categorias.js";
 
-    const listaFake = [{ id: 1, nome: "Sorvete" }];
+class categoriaRepositorio {
 
-    return listaFake;
+    async criarCategoria(nome: string) {
+        return await categoria.create({ nome_categoria: nome });
+    };
+
+    async buscarTodasCategorias() {
+        return await categoria.findAll();
+    };
+
+    async buscarCategroiaPorId(id: number) {
+        return await categoria.findByPk(id);
+    };
+
+    async excluirCategoria(id: number) {
+
+        return await categoria.destroy({
+            where: { id_categoria: id }
+        });
+    }
+
+    async atualizarCategoria(id: number, nome: string) {
+        return await categoria.update(
+            { nome_categoria: nome }, 
+            { where: { id_categoria: id } } 
+        );
+    }
+
 }
 
-async function buscaCategoriaPorId () {
-
-    const listaFake = [{ id: 1, nome: "Sorvete" }];
-
-    return listaFake;
-}
-
-async function salvaCategoria () {
-
-    const listaFake = [{ id: 1, nome: "Sorvete" }];
-
-    return listaFake;
-}
-
-async function editaCategoria () {
-
-    const listaFake = [{ id: 1, nome: "Sorvete" }];
-
-    return listaFake;
-}
-
-async function  excluiCategoria() {
-
-    const listaFake = [{ id: 1, nome: "Sorvete" }];
-
-    return listaFake;
-}
-
-export default {
-    buscaTodasCategorias,
-    buscaCategoriaPorId,
-    salvaCategoria,
-    editaCategoria,
-    excluiCategoria
-};
+export default new categoriaRepositorio();

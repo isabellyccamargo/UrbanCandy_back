@@ -9,8 +9,8 @@ conectarBanco();
 servidor.use(express.json());
 servidor.use(publico);
 
-servidor.listen(3000, () => {
-    console.log("Servidor TypeScript rodando na porta 3000");
+servidor.listen(3030, () => {
+    console.log("Servidor TypeScript rodando na porta 3030");
 });
 
 export default servidor;
