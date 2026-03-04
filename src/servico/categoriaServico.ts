@@ -30,13 +30,6 @@ class categoriaServico {
         return categoria;
     };
 
-    async excluirCategoria(id: number) {
-        const existe = await categoriaRepositorio.buscarCategroiaPorId(id);
-        if (!existe) throw new Error("Não foi possível excluir, categoria inexistente.");
-
-        return await categoriaRepositorio.excluirCategoria(id);
-    };
-
     async atualizarCategoria(id: number, nome: string) {
         if (!id) throw new Error("O ID da categoria é necessário para a atualização.");
         if (!nome || nome.trim() === "") throw new Error("O novo nome da categoria é obrigatório.");
@@ -55,6 +48,13 @@ class categoriaServico {
 
         return await categoriaRepositorio.atualizarCategoria(id, nome);
     }
+
+    async excluirCategoria(id: number) {
+        const existe = await categoriaRepositorio.buscarCategroiaPorId(id);
+        if (!existe) throw new Error("Não foi possível excluir, categoria inexistente.");
+
+        return await categoriaRepositorio.excluirCategoria(id);
+    };
 
 }
 

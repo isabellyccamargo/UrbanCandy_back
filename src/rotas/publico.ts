@@ -6,38 +6,26 @@ import categoriaControlador from "../controlador/categoriaControlador.js";
 const rotas = Router();
 
 // PRODUTO
-rotas.get("/produto/listar", produtoControlador.buscaTodosProdutos);
+rotas.get("/produto/listar", produtoControlador.buscarTodosProdutos);
 
-rotas.get("/produto/listarPorId", produtoControlador.buscaProdutoPorId);
+rotas.get("/produto/listarPorId/:id", produtoControlador.buscarProdutoPorId);
 
-rotas.post("/produto/salvar", produtoControlador.salvaProduto);
+rotas.post("/produto/salvar", produtoControlador.criarProduto);
 
-rotas.put("/produto/editar", produtoControlador.editaProduto);
+rotas.put("/produto/atualizar/:id", produtoControlador.atualizarProduto);
 
-rotas.delete("/produto/excluir", produtoControlador.excluiProduto);
+rotas.delete("/produto/excluir/:id", produtoControlador.excluirProduto);
 
 // CATEGORIA
 rotas.get("/categoria/listar", categoriaControlador.buscarTodasCategorias);
 
-rotas.get("/categoria/listarPorId", categoriaControlador.buscarCategroiaPorId);
+rotas.get("/categoria/listarPorId/:id", categoriaControlador.buscarCategroiaPorId);
 
 rotas.post("/categoria/salvar", categoriaControlador.criarCategoria);
 
-rotas.put("/categoria/editar/:id_categoria", categoriaControlador.atualizarCategoria);
+rotas.put("/categoria/atualizar/:id_categoria", categoriaControlador.atualizarCategoria);
 
 rotas.delete("/categoria/excluir/:id_categoria", categoriaControlador.excluirCategoria);
-
-// USUÁRIO
-rotas.get("/usuario/listar", usuarioControlador.buscaTodosUsuarios);
-
-rotas.get("/usuario/listarPorId", usuarioControlador.buscaUsuarioPorId);
-
-rotas.post("/usuario/salvar", usuarioControlador.salvaUsuario);
-
-rotas.put("/usuario/editar", usuarioControlador.editaUsuario);
-
-rotas.delete("/usuario/excluir", usuarioControlador.excluiUsuario);
-
 
 
 export default rotas;

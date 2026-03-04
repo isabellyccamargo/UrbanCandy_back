@@ -38,19 +38,6 @@ class categoriaControlador {
         }
     }
 
-    static async excluirCategoria(req: Request, res: Response) {
-        try {
-            const { id_categoria} = req.params;
-            const servico = categoriaServico;
-
-            await servico.excluirCategoria(Number(id_categoria));
-            res.status(204).send(); 
-        } catch (error: unknown) {
-            const mensagem = error instanceof Error ? error.message : "Erro ao excluir categoria";
-            res.status(400).send({ mensagem });
-        }
-    }
-
     static async atualizarCategoria(req: Request, res: Response) {
         try {
             const { id_categoria } = req.params; 
@@ -65,6 +52,20 @@ class categoriaControlador {
             res.status(400).send({ mensagem });
         }
     }
+
+    static async excluirCategoria(req: Request, res: Response) {
+        try {
+            const { id_categoria} = req.params;
+            const servico = categoriaServico;
+
+            await servico.excluirCategoria(Number(id_categoria));
+            res.status(204).send(); 
+        } catch (error: unknown) {
+            const mensagem = error instanceof Error ? error.message : "Erro ao excluir categoria";
+            res.status(400).send({ mensagem });
+        }
+    }
+
 }
 
 export default categoriaControlador;

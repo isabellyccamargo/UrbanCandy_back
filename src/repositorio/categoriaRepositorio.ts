@@ -14,18 +14,18 @@ class categoriaRepositorio {
         return await categoria.findByPk(id);
     };
 
-    async excluirCategoria(id: number) {
-
-        return await categoria.destroy({
-            where: { id_categoria: id }
-        });
-    }
-
     async atualizarCategoria(id: number, nome: string) {
         return await categoria.update(
             { nome_categoria: nome }, 
             { where: { id_categoria: id } } 
         );
+    }
+    
+    async excluirCategoria(id: number) {
+
+        return await categoria.destroy({
+            where: { id_categoria: id }
+        });
     }
 
 }
