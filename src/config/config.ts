@@ -6,7 +6,7 @@ const sequelize = new Sequelize("urbancandy", "root", "ADMIN", {
   logging: false, 
 });
 
-export const conectarBanco = async () => {
+export const dataBaseConectionn = async () => {
   try {
     await sequelize.authenticate();
     console.log('Conexão com o MySQL (Sequelize) estabelecida!');

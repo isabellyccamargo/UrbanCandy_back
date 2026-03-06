@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../configuracoes/config.js";
+import sequelize from "../config/config.js";
 
 class itemPedido extends Model {
     declare id_itemPedido: string;
@@ -10,7 +10,7 @@ class itemPedido extends Model {
     declare sub_total: Number;
 };
 
-itemPedido.init (
+itemPedido.init(
     {
         id_itemPedido: {
             type: DataTypes.BIGINT.UNSIGNED,
@@ -26,23 +26,23 @@ itemPedido.init (
             allowNull: false,
         },
         quantidade: {
-            type:DataTypes.BIGINT,
+            type: DataTypes.BIGINT,
             allowNull: true
-         },
+        },
         preco_unitario: {
-            type: DataTypes.DECIMAL(10,2),
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
         sub_total: {
-            type: DataTypes.DECIMAL(10,2),
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false
         }
     }, {
-        sequelize,
-        modelName: "itemPedido",
-        tableName: "item_pedido",
-        timestamps: false
-    }
+    sequelize,
+    modelName: "ItemPedido",
+    tableName: "item_pedido",
+    timestamps: false
+}
 );
 
 import pedidos from "./pedidos.js";

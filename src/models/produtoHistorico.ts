@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../configuracoes/config.js";
+import sequelize from "../config/config.js";
 
 class produtoHistorico extends Model {
     declare id_historico: string;
@@ -11,7 +11,7 @@ class produtoHistorico extends Model {
     declare campo_bigint: string;
 };
 
-produtoHistorico.init (
+produtoHistorico.init(
     {
         id_historico: {
             type: DataTypes.BIGINT.UNSIGNED,
@@ -27,9 +27,9 @@ produtoHistorico.init (
             allowNull: false,
         },
         valor_antigo: {
-            type:DataTypes.STRING(255),
+            type: DataTypes.STRING(255),
             allowNull: true
-         },
+        },
         valor_atual: {
             type: DataTypes.STRING(255),
             allowNull: false,
@@ -43,11 +43,11 @@ produtoHistorico.init (
             allowNull: false
         }
     }, {
-        sequelize,
-        modelName: "produtoHistorico",
-        tableName: "produto_historico",
-        timestamps: false
-    }
+    sequelize,
+    modelName: "ProdutoHistorico",
+    tableName: "produto_historico",
+    timestamps: false
+}
 );
 
 import produto from "./produtos.js";

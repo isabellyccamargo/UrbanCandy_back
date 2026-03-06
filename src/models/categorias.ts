@@ -1,12 +1,12 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../configuracoes/config.js";
+import sequelize from "../config/config.js";
 
 class categorias extends Model {
     declare id_categoria: number;
     declare nome_categoria: string;
 };
 
-categorias.init (
+categorias.init(
     {
         id_categoria: {
             type: DataTypes.INTEGER.UNSIGNED,
@@ -18,11 +18,11 @@ categorias.init (
             allowNull: false
         }
     }, {
-        sequelize,
-        modelName: "categorias",
-        tableName: "categorias",
-        timestamps: false
-    }
+    sequelize,
+    modelName: "Categorias",
+    tableName: "categorias",
+    timestamps: false
+}
 );
 
 export default categorias;

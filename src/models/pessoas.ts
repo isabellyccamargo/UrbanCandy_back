@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../configuracoes/config.js";
+import sequelize from "../config/config.js";
 
 class pessoa extends Model {
     declare id_pessoa: number;
@@ -10,7 +10,7 @@ class pessoa extends Model {
     declare id_endereco: number;
 };
 
-pessoa.init (
+pessoa.init(
     {
         id_pessoa: {
             type: DataTypes.INTEGER.UNSIGNED,
@@ -29,7 +29,7 @@ pessoa.init (
         telefone: {
             type: DataTypes.CHAR(13),
             allowNull: true
-         },
+        },
         id_usuario: {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
@@ -41,12 +41,12 @@ pessoa.init (
             //relacionamento depois
         }
     }, {
-        sequelize,
-        modelName: "pessoa",
-        tableName: "pessoas",
-        timestamps: false
-        
-    }
+    sequelize,
+    modelName: "Pessoa",
+    tableName: "pessoas",
+    timestamps: false
+
+}
 );
 
 import Endereco from "./endereco.js";

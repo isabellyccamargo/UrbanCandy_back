@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../configuracoes/config.js";
+import sequelize from "../config/config.js";
 
 class produtos extends Model {
     declare id_produto: number;
@@ -11,7 +11,7 @@ class produtos extends Model {
     declare id_categoria: bigint;
 };
 
-produtos.init (
+produtos.init(
     {
         id_produto: {
             type: DataTypes.INTEGER.UNSIGNED,
@@ -27,9 +27,9 @@ produtos.init (
             allowNull: false,
         },
         preco: {
-            type:DataTypes.DECIMAL(10,2),
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: true
-         },
+        },
         quantidade: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -43,11 +43,11 @@ produtos.init (
             allowNull: false
         }
     }, {
-        sequelize,
-        modelName: "produtos",
-        tableName: "produtos",
-        timestamps: false
-    }
+    sequelize,
+    modelName: "Produtos",
+    tableName: "produtos",
+    timestamps: false
+}
 );
 
 import categorias from "./categorias.js";

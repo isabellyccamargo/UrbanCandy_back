@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../configuracoes/config.js";
+import sequelize from "../config/config.js";
 
 class pedidos extends Model {
     declare id_categoria: number;
@@ -8,7 +8,7 @@ class pedidos extends Model {
     declare total: number;
 };
 
-pedidos.init (
+pedidos.init(
     {
         id_categoria: {
             type: DataTypes.INTEGER.UNSIGNED,
@@ -25,15 +25,15 @@ pedidos.init (
             defaultValue: DataTypes.NOW
         },
         total: {
-            type: DataTypes.DECIMAL(10,2),
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         }
     }, {
-        sequelize,
-        modelName: "pedidos",
-        tableName: "pedidos",
-        timestamps: false
-    }
+    sequelize,
+    modelName: "Pedidos",
+    tableName: "pedidos",
+    timestamps: false
+}
 );
 
 import cliente from "./pessoas.js";

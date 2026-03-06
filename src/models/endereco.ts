@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../configuracoes/config.js";
+import sequelize from "../config/config.js";
 
 class endereco extends Model {
     declare id_endereco: number;
@@ -11,7 +11,7 @@ class endereco extends Model {
     declare numero: bigint;
 };
 
-endereco.init (
+endereco.init(
     {
         id_endereco: {
             type: DataTypes.INTEGER.UNSIGNED,
@@ -27,9 +27,9 @@ endereco.init (
             allowNull: false,
         },
         bairro: {
-            type:DataTypes.STRING(100),
+            type: DataTypes.STRING(100),
             allowNull: true
-         },
+        },
         rua: {
             type: DataTypes.STRING(100),
             allowNull: false,
@@ -43,11 +43,11 @@ endereco.init (
             allowNull: false
         }
     }, {
-        sequelize,
-        modelName: "endereco",
-        tableName: "endereco",
-        timestamps: false
-    }
+    sequelize,
+    modelName: "Endereco",
+    tableName: "endereco",
+    timestamps: false
+}
 );
 
 export default endereco;

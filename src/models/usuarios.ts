@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../configuracoes/config.js";
+import sequelize from "../config/config.js";
 
 class usuarios extends Model {
     declare id_usuario: number;
@@ -8,7 +8,7 @@ class usuarios extends Model {
     declare administrador: string;
 };
 
-usuarios.init (
+usuarios.init(
     {
         id_usuario: {
             type: DataTypes.INTEGER.UNSIGNED,
@@ -24,16 +24,16 @@ usuarios.init (
             allowNull: false,
         },
         administrador: {
-            type: DataTypes.ENUM('0', '1'), 
+            type: DataTypes.ENUM('0', '1'),
             allowNull: true,
             defaultValue: '0'
-         }
+        }
     }, {
-        sequelize,
-        modelName: "psuarios",
-        tableName: "usuarios",
-        timestamps: false
-    }
+    sequelize,
+    modelName: "Usuarios",
+    tableName: "usuarios",
+    timestamps: false
+}
 );
 
 export default usuarios;
