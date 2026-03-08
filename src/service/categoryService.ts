@@ -21,8 +21,11 @@ class CategoryService {
 
     // CRUD - MÉTODOS PRINCIPAIs
 
-    async findAllCategory() {
-        return await CategoryRepository.findAllCategory();
+    async findAllCategory(page: number = 1, size: number = 10) {
+        const limit = size;
+        const offset = (page - 1) * size;
+
+        return await CategoryRepository.findAllCategory(limit, offset);
     }
 
     async findByIdCategory(id_category: number) {

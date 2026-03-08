@@ -50,7 +50,7 @@ produtoHistorico.init(
 }
 );
 
-import produto from "./produtos.js";
+import produto from "./Products.js";
 
 produtoHistorico.belongsTo(produto, { foreignKey: "id_produto", as: "produto" });
 

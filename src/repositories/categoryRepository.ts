@@ -2,8 +2,12 @@ import Categories from "../models/Categories.js";
 
 class CategoryRepository {
 
-    async findAllCategory() {
-        return await Categories.findAll();
+    async findAllCategory(limit: number, offset: number) {
+        return await Categories.findAndCountAll({
+            limit: limit,
+            offset: offset,
+            order: [['id_category', 'ASC']]
+        });
     };
 
     async findByIdCategory(id_category: number) {
@@ -24,7 +28,7 @@ class CategoryRepository {
         return await Categories.update(
             { name_category: category.name_category },
             {
-                where: { id_category: category.id_category}
+                where: { id_category: category.id_category }
             }
         );
     }

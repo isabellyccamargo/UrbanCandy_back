@@ -6,12 +6,25 @@ class CategoryController {
 
     static async findAllCategory(req: Request, res: Response) {
         try {
-            const categories = await CategoryService.findAllCategory();
-            res.send(categories);
+            const { page, size } = req.query;
+
+            const pageNumber = Number(page) || 1;
+            const sizeNumber = Number(size) || 10;
+
+            const result = await CategoryService.findAllCategory(pageNumber, sizeNumber);
+
+            res.send({
+                totalItems: result.count,
+                totalPages: Math.ceil(result.count / sizeNumber),
+                currentPage: pageNumber,
+                data: result.rows
+            });
         } catch (error: unknown) {
             res.status(500).send({ mensagem: "Erro ao buscar categorias." });
         }
+
     }
+
 
     static async findByIdCategory(req: Request, res: Response) {
         try {
@@ -59,7 +72,7 @@ class CategoryController {
             const { id_category } = req.params;
 
             await CategoryService.deleteCategory(Number(id_category));
-            res.status(204).send({mensagem: "Categoria excluida com sucesso!"});
+            res.status(204).send({ mensagem: "Categoria excluida com sucesso!" });
         } catch (error: unknown) {
             const mensagem = error instanceof Error ? error.message : "Erro ao excluir categoria";
             res.status(400).send({ mensagem });

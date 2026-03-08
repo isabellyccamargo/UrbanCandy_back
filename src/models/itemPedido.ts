@@ -46,7 +46,7 @@ itemPedido.init(
 );
 
 import pedidos from "./pedidos.js";
-import produtos from "./produtos.js";
+import produtos from "./Products.js";
 
 itemPedido.belongsTo(pedidos, { foreignKey: "id_pedido", as: "pedidos" });
 itemPedido.belongsTo(produtos, { foreignKey: "id_produto", as: "produtos" });

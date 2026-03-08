@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductController from "../Controllers/productController.js";
+import ProductController from "../Controllers/ProductController.js";
 import CategoryController from "../Controllers/CategoryController.js";
 
 const rotas = Router();
@@ -7,13 +7,13 @@ const rotas = Router();
 // PRODUTO
 rotas.get("/produto/listar", ProductController.findAllProduct);
 
-rotas.get("/produto/listarPorId/:id", ProductController.getByIdProduct);
+rotas.get("/produto/listarPorId/:id_product", ProductController.findByIdProduct);
 
 rotas.post("/produto/salvar", ProductController.createProduct);
 
-rotas.put("/produto/atualizar/:id", ProductController.updateProduct);
+rotas.put("/produto/atualizar/:id_product", ProductController.updateProduct);
 
-rotas.delete("/produto/excluir/:id", ProductController.deleteProduct);
+rotas.delete("/produto/excluir/:id_product", ProductController.deleteProduct);
 
 // CATEGORIA
 rotas.get("/categoria/listar", CategoryController.findAllCategory);

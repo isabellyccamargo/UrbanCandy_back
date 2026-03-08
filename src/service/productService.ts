@@ -1,61 +1,48 @@
-import productRepository from "../repositories/productRepository.js";
+import ProductRepository from "../repositories/ProductRepository.js";
 import CategoryRepository from "../repositories/CategoryRepository.js";
+import Products from "../models/Products.js";
 
-interface dataProduct {
-    nome: string,
-    descricao: string;
-    preco: number;
-    quantidade: number;
-    imagem: string;
-    id_categoria: number;
-};
-
-class produtoServico {
-
-    static async findAllProduct() {
-        return await productRepository.findAllProduct();
+class ProdutoServico {
+    // Função auxiliar
+    private validateData(p: Products): void {
+        if (!p.name?.trim()) throw new Error("O nome do produto é obrigatório.");
+        if (p.price <= 0) throw new Error("O preço deve ser um valor positivo.");
+        if (p.stock_number < 0) throw new Error("O estoque não pode ser negativo.");
+        if (!p.id_category) throw new Error("O produto deve ter uma categoria.");
     }
 
-    async getByIdProduct(id: number) {
-        if (!id) throw new Error("ID inválido para busca.");
+    // Metodos CRUDS
+    async findAllProduct(page: number = 1, size: number = 10) {
+        const limit = size;
+        const offset = (page - 1) * size;
+        return await ProductRepository.findAllProduct(limit, offset);
+    }
 
-        const product = await productRepository.getByIdProduct(id);
+    async findByIdProduct(id_product: number) {
+        if (!id_product) throw new Error("ID inválido para busca.");
+        
+        const product = await ProductRepository.findByIdProduct(id_product);
         if (!product) throw new Error("Produto não encontrado.");
-
         return product;
     }
 
-    async createProduct(data: dataProduct) {
-        this.ValidateRequiredData(data);
-
-        const categoryExists = await CategoryRepository.findByIdCategory(data.id_categoria);
-        if (!categoryExists) {
-            throw new Error("A categoria informada para  produto não existe.");
-        }
-
-        return await productRepository.createProduct(data);
+    async createProduct(product: Products) {
+        this.validateData(product);
+        const category = await CategoryRepository.findByIdCategory(Number(product.id_category));
+        if (!category) throw new Error("A categoria informada não existe.");
+        return await ProductRepository.createProduct(product);
     }
 
-    async updateProduct(id: number, data: Partial<dataProduct>) {
-        await this.getByIdProduct(id);
-
-        return await productRepository.updateProduct(id, data);
+    async updateProduct(product: Products) {
+        await this.findByIdProduct(product.id_product);
+        this.validateData(product);
+        return await ProductRepository.updateProduct(product);
     }
 
-    async deleteProduct(id: number) {
-        await this.getByIdProduct(id);
-
-        return await productRepository.deleteProduct(id);
-    }
-
-    private ValidateRequiredData(data: dataProduct): void {
-        if (!data.nome || data.nome.trim() === "") throw new Error("O nome do produto é obrigatório.");
-        if (!data.descricao || data.descricao.trim() === "") throw new Error("A descrição é obrigatória.");
-        if (data.preco <= 0) throw new Error("O preço deve ser um valor positivo.");
-        if (data.quantidade < 0) throw new Error("A quantidade não pode ser negativa.");
-        if (!data.imagem || data.imagem.trim() === "") throw new Error("O link da imagem é obrigatório.");
-        if (!data.id_categoria) throw new Error("O produto deve pertencer a uma categoria.");
+   async deleteProduct(id: number) {
+        await this.findByIdProduct(id);
+        return await ProductRepository.deleteProduct(id);
     }
 }
 
-export default new produtoServico();
+export default new ProdutoServico();

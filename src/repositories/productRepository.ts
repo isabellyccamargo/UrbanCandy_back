@@ -1,34 +1,47 @@
-import Produtos from "../models/produtos.js";
+import Products from "../models/Products.js";
+import Categories from "../models/Categories.js"
 
-class productRepository {
+class ProductRepository {
 
-    async findAllProduct() {
-        return await Produtos.findAll();
+    async findAllProduct(limit: number, offset: number) {
+        return await Products.findAndCountAll({
+            limit: limit,
+            offset: offset,
+            order: [['id_product', 'ASC']],
+            include: [{ model: Categories, as: "category" }] 
+        });
     };
 
-    async getByIdProduct(id: number) {
-        return await Produtos.findByPk(id);
+    async findByIdProduct(id_product: number) {
+       return await Products.findByPk(id_product, {
+            include: [{ model: Categories, as: "category" }]
+        });
     };
 
-    async createProduct(data: {
-        nome: string,
-        descricao: string,
-        preco: number,
-        quantidade: number,
-        imagem: string,
-        id_categoria: number
-    }) {
-        return await Produtos.create(data);
+    async createProduct(product: Products) {
+        return await product.save();;
     };
 
-    async updateProduct(id: number, data: object) {
-        return await Produtos.update(data, { where: { id_produto: id } });
+    async updateProduct(product: Products) {
+        return await Products.update(
+            { 
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                stock_number: product.stock_number,
+                image: product.image,
+                id_category: product.id_category
+            },
+            { 
+                where: { id_product: product.id_product } 
+            }
+        );
     };
 
-    async deleteProduct(id: number) {
-        return await Produtos.destroy({ where: { id_produto: id } });
+    async deleteProduct(id_product: number) {
+        return await Products.destroy({ where: { id_product: id_product } });
     };
 
 }
 
-export default new productRepository();
+export default new ProductRepository();

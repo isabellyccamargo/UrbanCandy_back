@@ -1,57 +1,57 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/config.js";
 
-class produtos extends Model {
-    declare id_produto: number;
-    declare nome: string;
-    declare descricao: string;
-    declare preco: number;
-    declare quantidade: number;
-    declare imagem: string;
-    declare id_categoria: bigint;
+class Products extends Model {
+    declare id_product: number;
+    declare name: string;
+    declare description: string;
+    declare price: number;
+    declare stock_number: number;
+    declare image: string;
+    declare id_category: bigint;
 };
 
-produtos.init(
+Products.init(
     {
-        id_produto: {
+        id_product: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true
         },
-        nome: {
+        name: {
             type: DataTypes.STRING(100),
             allowNull: false
         },
-        descricao: {
+        description: {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
-        preco: {
+        price: {
             type: DataTypes.DECIMAL(10, 2),
             allowNull: true
         },
-        quantidade: {
+        stock_number: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        imagem: {
+        image: {
             type: DataTypes.STRING(255),
             allowNull: false
         },
-        id_categoria: {
+        id_category: {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
         }
     }, {
     sequelize,
-    modelName: "Produtos",
-    tableName: "produtos",
+    modelName: "Products",
+    tableName: "Products",
     timestamps: false
 }
 );
 
-import categorias from "./Categories.js";
+import Categories from "./Categories.js";
 
-produtos.belongsTo(categorias, { foreignKey: "id_categoria", as: "categoria" });
+Products.belongsTo(Categories, { foreignKey: "id_category", as: "category" });
 
-export default produtos;
+export default Products;
