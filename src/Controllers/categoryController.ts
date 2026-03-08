@@ -1,21 +1,22 @@
 import { type Request, type Response } from "express";
-import categoryService from "../service/categoryService.js";
+import CategoryService from "../service/CategoryService.js";
+import Categories from "../models/Categories.js"
 
-class categoryController {
+class CategoryController {
 
     static async findAllCategory(req: Request, res: Response) {
         try {
-            const categories = await categoryService.findAllCategory();
+            const categories = await CategoryService.findAllCategory();
             res.send(categories);
         } catch (error: unknown) {
             res.status(500).send({ mensagem: "Erro ao buscar categorias." });
         }
     }
 
-    static async getByIdCategory(req: Request, res: Response) {
+    static async findByIdCategory(req: Request, res: Response) {
         try {
-            const { id } = req.params;
-            const categories = await categoryService.getByIdCategory(Number(id));
+            const { id_category } = req.params;
+            const categories = await CategoryService.findByIdCategory(Number(id_category));
             res.send(categories);
         } catch (error: unknown) {
             const mensagem = error instanceof Error ? error.message : "Categoria não encontrada";
@@ -25,8 +26,8 @@ class categoryController {
 
     static async createCategory(req: Request, res: Response) {
         try {
-            const { nome_categoria } = req.body;
-            const newCategory = await categoryService.createCategory(nome_categoria);
+            const categoryInstance = Categories.build(req.body);
+            const newCategory = await CategoryService.createCategory(categoryInstance);
 
             res.status(201).send(newCategory);
         } catch (error: unknown) {
@@ -37,10 +38,14 @@ class categoryController {
 
     static async updateCategory(req: Request, res: Response) {
         try {
-            const { id_categoria } = req.params;
-            const { nome_categoria } = req.body;
-          
-            await categoryService.updateCategory(Number(id_categoria), nome_categoria);
+            const { id_category } = req.params;
+
+            const categoryInstance = Categories.build({
+                id_category: Number(id_category),
+                ...req.body
+            });
+
+            await CategoryService.updateCategory(categoryInstance);
 
             res.send({ mensagem: "Categoria atualizada com sucesso!" });
         } catch (error: unknown) {
@@ -51,16 +56,15 @@ class categoryController {
 
     static async deleteCategory(req: Request, res: Response) {
         try {
-            const { id_categoria } = req.params;
-            
-            await categoryService.deleteCategory(Number(id_categoria));
-            res.status(204).send();
+            const { id_category } = req.params;
+
+            await CategoryService.deleteCategory(Number(id_category));
+            res.status(204).send({mensagem: "Categoria excluida com sucesso!"});
         } catch (error: unknown) {
             const mensagem = error instanceof Error ? error.message : "Erro ao excluir categoria";
             res.status(400).send({ mensagem });
         }
     }
-
 }
 
-export default categoryController;
+export default CategoryController;

@@ -1,11 +1,10 @@
-import userRepository from "../repositories/userRepository.js";
+import userRepository, { userData } from "../repositories/userRepository.js";
+import bcrypt from "bcrypt";
 
 class userService {
-    static async findAllUsers() {
-        const usuarios = await userRepository.findAllUsers();
-
-        return usuarios;
-    };
+   static async findAllUsers(limit?: number, offset?: number) {
+        return await userRepository.findAll(limit, offset);
+    }
 
     static async getByIdUser(id: number) {
         const usuario = await userRepository.getByIdUser();

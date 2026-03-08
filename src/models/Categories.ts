@@ -1,28 +1,28 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/config.js";
 
-class categorias extends Model {
-    declare id_categoria: number;
-    declare nome_categoria: string;
+class Categories extends Model {
+    declare id_category: number;
+    declare name_category: string;
 };
 
-categorias.init(
+Categories.init(
     {
-        id_categoria: {
+        id_category: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true
         },
-        nome_categoria: {
+        name_category: {
             type: DataTypes.STRING(255),
             allowNull: false
         }
     }, {
-    sequelize,
-    modelName: "Categorias",
-    tableName: "categorias",
-    timestamps: false
-}
+        sequelize,
+        modelName: "Categories",
+        tableName: "Categories",
+        timestamps: false
+    }
 );
 
-export default categorias;
+export default Categories;

@@ -1,62 +1,61 @@
 import { error } from "node:console";
-import categoryRepository from "../repositories/categoryRepository.js";
+import CategoryRepository from "../repositories/CategoryRepository.js";
 import { deflate } from "node:zlib";
+import Categories from "../models/Categories.js"
 
-class categoryService {
+class CategoryService {
     //FUNÇÕES AUXILIARES
-    private validateName(nome: string) {
-        if (!nome || nome.trim() === "") {
+    private validateName(category: Categories) {
+        if (!category.name_category || category.name_category.trim() === "") {
             throw new Error("O nome da categoria é obrigatório!");
         }
     }
 
-    private async verifyNameNotExists(nome: string, idIgnorar?: number) {
-        const allCategories = await categoryRepository.findAllCategory();
+    private async verifyNameNotExists(name_category: string, ignoreID?: number) {
+        const exists = await CategoryRepository.findByName(name_category);
 
-        const exists = allCategories.find(c => c.nome_categoria.toLowerCase() === nome.toLowerCase());
-
-        if (exists) {
+        if (exists && exists.id_category !== ignoreID) {
             throw new Error("Já existe uma categoria com este nome no sistema!");
         }
     }
 
-    // CRUD - MÉTODOS PRINCIPAI
+    // CRUD - MÉTODOS PRINCIPAIs
 
     async findAllCategory() {
-        return await categoryRepository.findAllCategory();
+        return await CategoryRepository.findAllCategory();
     }
 
-    async getByIdCategory(id: number) {
-        const category = await categoryRepository.getByIdCategory(id);
+    async findByIdCategory(id_category: number) {
+        const category = await CategoryRepository.findByIdCategory(id_category);
         if (!category) throw new Error("Categoria não encontrada.");
         return category;
     }
 
-    async createCategory(nome: string) {
-        this.validateName(nome);
-        await this.verifyNameNotExists(nome);
+    async createCategory(category: Categories) {
+        this.validateName(category);
+        await this.verifyNameNotExists(category.name_category);
 
-        return await categoryRepository.createCategory(nome);
+        return await CategoryRepository.createCategory(category);
     }
 
-    async updateCategory(id: number, nome: string) {
-        if (!id) throw new Error("O ID é necessário para atualização.");
+    async updateCategory(category: Categories) {
+        if (!category.id_category) throw new Error("O ID é necessário para atualização.");
 
-        this.validateName(nome);
+        this.validateName(category);
 
-        await this.getByIdCategory(id);
+        await this.findByIdCategory(category.id_category);
 
-        await this.verifyNameNotExists(nome, id);
+        await this.verifyNameNotExists(category.name_category, category.id_category);
 
-        return await categoryRepository.updateCategory(id, nome);
+        return await CategoryRepository.updateCategory(category);
     }
 
-    async deleteCategory(id: number) {
-        await this.getByIdCategory(id);
+    async deleteCategory(id_category: number) {
+        await this.findByIdCategory(id_category);
 
 
-        return await categoryRepository.deleteCategory(id);
+        return await CategoryRepository.deleteCategory(id_category);
     }
 }
 
-export default new categoryService();
+export default new CategoryService();

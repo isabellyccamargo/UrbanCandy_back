@@ -1,5 +1,5 @@
 import productRepository from "../repositories/productRepository.js";
-import categoryRepository from "../repositories/categoryRepository.js";
+import CategoryRepository from "../repositories/CategoryRepository.js";
 
 interface dataProduct {
     nome: string,
@@ -28,7 +28,7 @@ class produtoServico {
     async createProduct(data: dataProduct) {
         this.ValidateRequiredData(data);
 
-        const categoryExists = await categoryRepository.getByIdCategory(data.id_categoria);
+        const categoryExists = await CategoryRepository.findByIdCategory(data.id_categoria);
         if (!categoryExists) {
             throw new Error("A categoria informada para  produto não existe.");
         }

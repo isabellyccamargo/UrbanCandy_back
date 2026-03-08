@@ -1,39 +1,37 @@
 import User from "../models/usuarios.js"
 
+export interface userData {
+    email: string;
+    password: string;
+}
+
 class userRepository {
-    static async findAllUsers() {
+    static async findAll(limit: number = 10, offset: number = 0) {
+        return await User.findAll({ limit, offset });
+    };
 
-        const listaFake = [{ id: 1, nome: "Isabelly" }];
+    static async findByIdUser(id: number) {
+        return await User.findByPk(id);
+    };
 
-        return listaFake;
+    static async findByEmail(email: string) {
+        return await User.findOne({ where: { email } });
+    };
+
+    static async createUser(userData: userData) {
+        return await User.create(userData);
+    };
+
+    static async update(id: number, userData: Partial<userData>) {
+        return await User.update(userData, {
+            where: { id_usuario: id }
+        });
     }
 
-    static async getByIdUser() {
-
-        const listaFake = [{ id: 1, nome: "Isabelly" }];
-
-        return listaFake;
-    }
-
-    static async createUser() {
-
-        const listaFake = [{ id: 1, nome: "Isabelly" }];
-
-        return listaFake;
-    }
-
-    static async updateUser() {
-
-        const listaFake = [{ id: 1, nome: "Isabelly" }];
-
-        return listaFake;
-    }
-
-    static async deleteUser() {
-
-        const listaFake = [{ id: 1, nome: "Isabelly" }];
-
-        return listaFake;
+    static async delete(id: number) {
+        return await User.destroy({
+            where: { id_usuario: id }
+        });
     }
 };
 

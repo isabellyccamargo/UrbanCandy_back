@@ -50,7 +50,7 @@ produtos.init(
 }
 );
 
-import categorias from "./categorias.js";
+import categorias from "./Categories.js";
 
 produtos.belongsTo(categorias, { foreignKey: "id_categoria", as: "categoria" });
 

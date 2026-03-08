@@ -1,32 +1,40 @@
-import Categorias from "../models/categorias.js";
+import Categories from "../models/Categories.js";
 
-class categoryRepository {
+class CategoryRepository {
 
     async findAllCategory() {
-        return await Categorias.findAll();
+        return await Categories.findAll();
     };
 
-    async getByIdCategory(id: number) {
-        return await Categorias.findByPk(id);
+    async findByIdCategory(id_category: number) {
+        return await Categories.findByPk(id_category);
     };
 
-    async createCategory(nome: string) {
-        return await Categorias.create({ nome_categoria: nome });
+    async findByName(name_category: string) {
+        return await Categories.findOne({
+            where: { name_category: name_category }
+        });
+    }
+
+    async createCategory(category: Categories) {
+        return await category.save();
     };
 
-    async updateCategory(id: number, nome: string) {
-        return await Categorias.update(
-            { nome_categoria: nome },
-            { where: { id_categoria: id } }
+    async updateCategory(category: Categories) {
+        return await Categories.update(
+            { name_category: category.name_category },
+            {
+                where: { id_category: category.id_category}
+            }
         );
     }
 
-    async deleteCategory(id: number) {
-        return await Categorias.destroy({
-            where: { id_categoria: id }
+    async deleteCategory(id_category: number) {
+        return await Categories.destroy({
+            where: { id_category: id_category }
         });
     }
 
 }
 
-export default new categoryRepository();
+export default new CategoryRepository();

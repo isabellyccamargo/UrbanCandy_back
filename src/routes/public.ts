@@ -1,30 +1,30 @@
 import { Router } from "express";
-import productController from "../Controllers/productController.js";
-import categoryController from "../Controllers/categoryController.js";
+import ProductController from "../Controllers/productController.js";
+import CategoryController from "../Controllers/CategoryController.js";
 
 const rotas = Router();
 
 // PRODUTO
-rotas.get("/produto/listar", productController.findAllProduct);
+rotas.get("/produto/listar", ProductController.findAllProduct);
 
-rotas.get("/produto/listarPorId/:id", productController.getByIdProduct);
+rotas.get("/produto/listarPorId/:id", ProductController.getByIdProduct);
 
-rotas.post("/produto/salvar", productController.createProduct);
+rotas.post("/produto/salvar", ProductController.createProduct);
 
-rotas.put("/produto/atualizar/:id", productController.updateProduct);
+rotas.put("/produto/atualizar/:id", ProductController.updateProduct);
 
-rotas.delete("/produto/excluir/:id", productController.deleteProduct);
+rotas.delete("/produto/excluir/:id", ProductController.deleteProduct);
 
 // CATEGORIA
-rotas.get("/categoria/listar", categoryController.findAllCategory);
+rotas.get("/categoria/listar", CategoryController.findAllCategory);
 
-rotas.get("/categoria/listarPorId/:id", categoryController.getByIdCategory);
+rotas.get("/categoria/listarPorId/:id_category", CategoryController.findByIdCategory);
 
-rotas.post("/categoria/salvar", categoryController.createCategory);
+rotas.post("/categoria/salvar", CategoryController.createCategory);
 
-rotas.put("/categoria/atualizar/:id_categoria", categoryController.updateCategory);
+rotas.put("/categoria/atualizar/:id_category", CategoryController.updateCategory);
 
-rotas.delete("/categoria/excluir/:id_categoria", categoryController.deleteCategory);
+rotas.delete("/categoria/excluir/:id_category", CategoryController.deleteCategory);
 
 
 export default rotas;
