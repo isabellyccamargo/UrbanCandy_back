@@ -8,12 +8,22 @@ class ProductRepository {
             limit: limit,
             offset: offset,
             order: [['id_product', 'ASC']],
-            include: [{ model: Categories, as: "category" }] 
+            include: [{ model: Categories, as: "category" }]
+        });
+    };
+
+    async findFeaturedProducts(limit: number, offset: number) {
+        return await Products.findAndCountAll({
+            where: { featured: true },
+            limit: limit,
+            offset: offset,
+            order: [['id_product', 'ASC']],
+            include: [{ model: Categories, as: "category" }]
         });
     };
 
     async findByIdProduct(id_product: number) {
-       return await Products.findByPk(id_product, {
+        return await Products.findByPk(id_product, {
             include: [{ model: Categories, as: "category" }]
         });
     };
@@ -24,16 +34,17 @@ class ProductRepository {
 
     async updateProduct(product: Products) {
         return await Products.update(
-            { 
+            {
                 name: product.name,
                 description: product.description,
                 price: product.price,
                 stock_number: product.stock_number,
                 image: product.image,
-                id_category: product.id_category
+                id_category: product.id_category,
+                featured: product.featured
             },
-            { 
-                where: { id_product: product.id_product } 
+            {
+                where: { id_product: product.id_product }
             }
         );
     };

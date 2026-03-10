@@ -24,11 +24,13 @@ class CategoryRepository {
         return await category.save();
     };
 
-    async updateCategory(category: Categories) {
+    async updateCategory(idCategory: number, category: Categories) {
         return await Categories.update(
-            { name_category: category.name_category },
             {
-                where: { id_category: category.id_category }
+                name_category: category.name_category
+            },
+            {
+                where: { id_category: idCategory }
             }
         );
     }

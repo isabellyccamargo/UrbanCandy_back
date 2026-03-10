@@ -11,10 +11,10 @@ class CategoryService {
         }
     }
 
-    private async verifyNameNotExists(name_category: string, ignoreID?: number) {
-        const exists = await CategoryRepository.findByName(name_category);
+    private async verifyNameNotExists(category: Categories, CategoryID?: number) {
+        const categoryEntity = await CategoryRepository.findByName(category.name_category);
 
-        if (exists && exists.id_category !== ignoreID) {
+        if (categoryEntity && categoryEntity.id_category !== CategoryID) {
             throw new Error("Já existe uma categoria com este nome no sistema!");
         }
     }
@@ -28,29 +28,29 @@ class CategoryService {
         return await CategoryRepository.findAllCategory(limit, offset);
     }
 
-    async findByIdCategory(id_category: number) {
-        const category = await CategoryRepository.findByIdCategory(id_category);
+    async findByIdCategory(categoryId: number) {
+        const category = await CategoryRepository.findByIdCategory(categoryId);
         if (!category) throw new Error("Categoria não encontrada.");
         return category;
     }
 
     async createCategory(category: Categories) {
         this.validateName(category);
-        await this.verifyNameNotExists(category.name_category);
+        await this.verifyNameNotExists(category);
 
         return await CategoryRepository.createCategory(category);
     }
 
-    async updateCategory(category: Categories) {
-        if (!category.id_category) throw new Error("O ID é necessário para atualização.");
+    async updateCategory(idCategory: number, category: Categories) {
+        if (!idCategory) throw new Error("O ID é necessário para atualização.");
 
         this.validateName(category);
 
-        await this.findByIdCategory(category.id_category);
+        await this.findByIdCategory(idCategory);
 
-        await this.verifyNameNotExists(category.name_category, category.id_category);
+        await this.verifyNameNotExists(category, idCategory);
 
-        return await CategoryRepository.updateCategory(category);
+        return await CategoryRepository.updateCategory(idCategory, category);
     }
 
     async deleteCategory(id_category: number) {

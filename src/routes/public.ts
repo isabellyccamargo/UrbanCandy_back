@@ -7,6 +7,8 @@ const rotas = Router();
 // PRODUTO
 rotas.get("/produto/listar", ProductController.findAllProduct);
 
+rotas.get("/produto/destaque", ProductController.findFeaturedProducts);
+
 rotas.get("/produto/listarPorId/:id_product", ProductController.findByIdProduct);
 
 rotas.post("/produto/salvar", ProductController.createProduct);
@@ -22,7 +24,7 @@ rotas.get("/categoria/listarPorId/:id_category", CategoryController.findByIdCate
 
 rotas.post("/categoria/salvar", CategoryController.createCategory);
 
-rotas.put("/categoria/atualizar/:id_category", CategoryController.updateCategory);
+rotas.put("/categoria/atualizar/:idCategory", CategoryController.updateCategory);
 
 rotas.delete("/categoria/excluir/:id_category", CategoryController.deleteCategory);
 

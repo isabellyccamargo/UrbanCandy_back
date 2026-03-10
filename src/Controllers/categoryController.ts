@@ -51,14 +51,10 @@ class CategoryController {
 
     static async updateCategory(req: Request, res: Response) {
         try {
-            const { id_category } = req.params;
+            const { idCategory } = req.params;
+            const categoryInstance = Categories.build(req.body);
 
-            const categoryInstance = Categories.build({
-                id_category: Number(id_category),
-                ...req.body
-            });
-
-            await CategoryService.updateCategory(categoryInstance);
+            await CategoryService.updateCategory(Number(idCategory), categoryInstance);
 
             res.send({ mensagem: "Categoria atualizada com sucesso!" });
         } catch (error: unknown) {

@@ -9,6 +9,7 @@ class Products extends Model {
     declare stock_number: number;
     declare image: string;
     declare id_category: bigint;
+    declare featured: boolean;
 };
 
 Products.init(
@@ -40,6 +41,10 @@ Products.init(
         },
         id_category: {
             type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false
+        },
+        featured: {
+            type: DataTypes.BOOLEAN,
             allowNull: false
         }
     }, {

@@ -18,9 +18,15 @@ class ProdutoServico {
         return await ProductRepository.findAllProduct(limit, offset);
     }
 
+    async findFeaturedProducts(page: number = 1, size: number = 10) {
+        const limit = size;
+        const offset = (page - 1) * size;
+        return await ProductRepository.findFeaturedProducts(limit, offset);
+    }
+
     async findByIdProduct(id_product: number) {
         if (!id_product) throw new Error("ID inválido para busca.");
-        
+
         const product = await ProductRepository.findByIdProduct(id_product);
         if (!product) throw new Error("Produto não encontrado.");
         return product;
@@ -39,7 +45,7 @@ class ProdutoServico {
         return await ProductRepository.updateProduct(product);
     }
 
-   async deleteProduct(id: number) {
+    async deleteProduct(id: number) {
         await this.findByIdProduct(id);
         return await ProductRepository.deleteProduct(id);
     }
