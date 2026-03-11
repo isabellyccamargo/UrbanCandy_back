@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import CategoryService from "../service/CategoryService.js";
+import CategoryService from "../Service/CategoryService.js";
 import Categories from "../Models/Categories.js"
 
 class CategoryController {

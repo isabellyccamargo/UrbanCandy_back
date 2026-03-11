@@ -1,5 +1,5 @@
 import { error } from "node:console";
-import CategoryRepository from "../repositories/CategoryRepository.js";
+import CategoryRepository from "../Repositories/CategoryRepository.js";
 import { deflate } from "node:zlib";
 import Categories from "../Models/Categories.js"
 

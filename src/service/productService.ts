@@ -1,5 +1,5 @@
-import ProductRepository from "../repositories/ProductRepository.js";
-import CategoryRepository from "../repositories/CategoryRepository.js";
+import ProductRepository from "../Repositories/ProductRepository.js";
+import CategoryRepository from "../Repositories/CategoryRepository.js";
 import Products from "../Models/Products.js";
 
 class ProdutoServico {
