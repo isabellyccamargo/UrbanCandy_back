@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/config.js";
+import sequelize from "../Config/Config.js";
 
 class Products extends Model {
     declare id_product: number;

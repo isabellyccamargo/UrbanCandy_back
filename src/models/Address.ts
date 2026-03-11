@@ -1,19 +1,19 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/config.js";
+import sequelize from "../Config/Config.js";
 
-class endereco extends Model {
-    declare id_endereco: number;
+class Address extends Model {
+    declare id_address: number;
     declare cep: string;
-    declare cidade: string;
-    declare bairro: string;
-    declare rua: string;
-    declare complemento: string;
-    declare numero: bigint;
+    declare city: string;
+    declare neighborhood: string;
+    declare road: string;
+    declare complement: string;
+    declare number: bigint;
 };
 
-endereco.init(
+Address.init(
     {
-        id_endereco: {
+        id_address: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true
@@ -22,32 +22,32 @@ endereco.init(
             type: DataTypes.CHAR(8),
             allowNull: false
         },
-        cidade: {
+        city: {
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-        bairro: {
+        neighborhood: {
             type: DataTypes.STRING(100),
             allowNull: true
         },
-        rua: {
+        road: {
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-        complemento: {
+        complement: {
             type: DataTypes.STRING(255),
             allowNull: false
         },
-        numero: {
+        number: {
             type: DataTypes.BIGINT,
             allowNull: false
         }
     }, {
     sequelize,
-    modelName: "Endereco",
-    tableName: "endereco",
+    modelName: "Address",
+    tableName: "address",
     timestamps: false
 }
 );
 
-export default endereco;
+export default Address;

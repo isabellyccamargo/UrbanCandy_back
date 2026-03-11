@@ -1,8 +1,8 @@
 import express, { type Application } from "express";
-import path from "path"; 
-import { fileURLToPath } from "url"; 
+import path from "path";
+import { fileURLToPath } from "url";
 import publico from "./src/routes/public.js";
-import { dataBaseConectionn } from "./src/config/config.js";
+import { dataBaseConectionn } from "./src/Config/Config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

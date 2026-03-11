@@ -1,6 +1,6 @@
 import ProductRepository from "../repositories/ProductRepository.js";
 import CategoryRepository from "../repositories/CategoryRepository.js";
-import Products from "../models/Products.js";
+import Products from "../Models/Products.js";
 
 class ProdutoServico {
     // Função auxiliar

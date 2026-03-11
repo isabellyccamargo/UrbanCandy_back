@@ -1,5 +1,5 @@
-import Products from "../models/Products.js";
-import Categories from "../models/Categories.js"
+import Products from "../Models/Products.js";
+import Categories from "../Models/Categories.js"
 
 class ProductRepository {
 

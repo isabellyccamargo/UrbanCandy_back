@@ -1,4 +1,4 @@
-import User from "../models/usuarios.js"
+import User from "../Models/Users.js"
 
 export interface userData {
     email: string;

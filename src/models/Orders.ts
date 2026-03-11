@@ -1,25 +1,25 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/config.js";
+import sequelize from "../Config/Config.js";
 
-class pedidos extends Model {
-    declare id_categoria: number;
-    declare id_cliente: number;
-    declare data_pedido: Date;
+class Orders extends Model {
+    declare id_orders: number;
+    declare id_people: number;
+    declare order_date: Date;
     declare total: number;
 };
 
-pedidos.init(
+Orders.init(
     {
-        id_categoria: {
+        id_orders: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true
         },
-        id_cliente: {
+        id_people: {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
         },
-        data_pedido: {
+        order_date: {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
@@ -30,14 +30,14 @@ pedidos.init(
         }
     }, {
     sequelize,
-    modelName: "Pedidos",
-    tableName: "pedidos",
+    modelName: "Orders",
+    tableName: "orders",
     timestamps: false
 }
 );
 
-import cliente from "./pessoas.js";
+import cliente from "./People.js";
 
-pedidos.belongsTo(cliente, { foreignKey: "id_pessoa", as: "pessoa" });
+Orders.belongsTo(cliente, { foreignKey: "id_people", as: "people" });
 
-export default pedidos;
+export default Orders;

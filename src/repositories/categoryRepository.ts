@@ -1,4 +1,4 @@
-import Categories from "../models/Categories.js";
+import Categories from "../Models/Categories.js";
 
 class CategoryRepository {
 

@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/config.js";
+import sequelize from "../Config/Config.js";
 
 class Categories extends Model {
     declare id_category: number;
@@ -18,11 +18,11 @@ Categories.init(
             allowNull: false
         }
     }, {
-        sequelize,
-        modelName: "Categories",
-        tableName: "Categories",
-        timestamps: false
-    }
+    sequelize,
+    modelName: "Categories",
+    tableName: "Categories",
+    timestamps: false
+}
 );
 
 export default Categories;

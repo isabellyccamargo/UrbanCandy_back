@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/config.js";
+import sequelize from "../Config/Config.js";
 
-class itemPedido extends Model {
+class OrderItem extends Model {
     declare id_itemPedido: string;
     declare id_pedido: number;
     declare id_produto: number;
@@ -10,26 +10,26 @@ class itemPedido extends Model {
     declare sub_total: Number;
 };
 
-itemPedido.init(
+OrderItem.init(
     {
-        id_itemPedido: {
+        id_orderItem: {
             type: DataTypes.BIGINT.UNSIGNED,
             autoIncrement: true,
             primaryKey: true
         },
-        id_pedido: {
+        id_order: {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
         },
-        id_produto: {
+        id_product: {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
         },
-        quantidade: {
+        quantity: {
             type: DataTypes.BIGINT,
             allowNull: true
         },
-        preco_unitario: {
+        unit_price: {
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
@@ -39,16 +39,16 @@ itemPedido.init(
         }
     }, {
     sequelize,
-    modelName: "ItemPedido",
-    tableName: "item_pedido",
+    modelName: "OrderItem",
+    tableName: "order_item",
     timestamps: false
 }
 );
 
-import pedidos from "./pedidos.js";
+import pedidos from "./Orders.js";
 import produtos from "./Products.js";
 
-itemPedido.belongsTo(pedidos, { foreignKey: "id_pedido", as: "pedidos" });
-itemPedido.belongsTo(produtos, { foreignKey: "id_produto", as: "produtos" });
+OrderItem.belongsTo(pedidos, { foreignKey: "id_order", as: "orders" });
+OrderItem.belongsTo(produtos, { foreignKey: "id_product", as: "products" });
 
-export default itemPedido;
+export default OrderItem;

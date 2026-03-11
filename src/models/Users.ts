@@ -1,16 +1,16 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/config.js";
+import sequelize from "../Config/Config.js";
 
-class usuarios extends Model {
-    declare id_usuario: number;
+class Users extends Model {
+    declare id_user: number;
     declare email: string;
-    declare senha: string;
-    declare administrador: string;
+    declare password: string;
+    declare administrator: string;
 };
 
-usuarios.init(
+Users.init(
     {
-        id_usuario: {
+        id_user: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true
@@ -19,21 +19,21 @@ usuarios.init(
             type: DataTypes.STRING(150),
             allowNull: false
         },
-        senha: {
+        password: {
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-        administrador: {
+        administrator: {
             type: DataTypes.ENUM('0', '1'),
             allowNull: true,
             defaultValue: '0'
         }
     }, {
     sequelize,
-    modelName: "Usuarios",
-    tableName: "usuarios",
+    modelName: "Users",
+    tableName: "users",
     timestamps: false
 }
 );
 
-export default usuarios;
+export default Users;

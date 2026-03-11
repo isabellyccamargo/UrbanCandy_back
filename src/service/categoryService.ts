@@ -1,7 +1,7 @@
 import { error } from "node:console";
 import CategoryRepository from "../repositories/CategoryRepository.js";
 import { deflate } from "node:zlib";
-import Categories from "../models/Categories.js"
+import Categories from "../Models/Categories.js"
 
 class CategoryService {
     //FUNÇÕES AUXILIARES
