@@ -47,10 +47,10 @@ People.init(
 }
 );
 
-import Endereco from "./Address.js";
 import Users from "./Users.js";
+import Address from "./Address.js";
 
-People.belongsTo(Endereco, { foreignKey: "id_endereco", as: "endereco" });
+People.belongsTo(Address, { foreignKey: "id_address", as: "address" });
 People.belongsTo(Users, { foreignKey: "id_user", as: "users" });
 
 export default People;

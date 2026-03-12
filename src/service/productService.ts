@@ -32,6 +32,15 @@ class ProdutoServico {
         return product;
     }
 
+    async findByCategory(categoryName: string, page: number = 1, size: number = 10) {
+        const formattedName = categoryName.charAt(0).toUpperCase() + categoryName.slice(1).toLowerCase();
+
+        const limit = size;
+        const offset = (page - 1) * size;
+
+        return await ProductRepository.findByByCategory(formattedName, limit, offset);
+    }
+
     async createProduct(product: Products) {
         this.validateData(product);
         const category = await CategoryRepository.findByIdCategory(Number(product.id_category));

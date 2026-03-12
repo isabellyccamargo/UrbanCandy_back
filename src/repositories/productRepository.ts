@@ -28,6 +28,19 @@ class ProductRepository {
         });
     };
 
+    async findByByCategory(categoryName: string, limit: number, offset: number) {
+    return await Products.findAndCountAll({
+        limit: limit,
+        offset: offset,
+        order: [['id_product', 'ASC']],
+        include: [{ 
+            model: Categories, 
+            as: "category",
+            where: { name_category: categoryName } 
+        }]
+    });
+};
+
     async createProduct(product: Products) {
         return await product.save();;
     };

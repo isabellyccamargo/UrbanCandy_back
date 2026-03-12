@@ -51,6 +51,26 @@ class ProductController {
         }
     }
 
+    static async findByCategory(req: Request, res: Response): Promise<void> {
+        try {
+            const { categoryName } = req.params as { categoryName: string };
+            const page = Number(req.query.page) || 1;
+            const size = Number(req.query.size) || 10;
+
+            const result = await ProductService.findByCategory(categoryName, page, size);
+
+            res.status(200).send({
+                totalItems: result.count,
+                totalPages: Math.ceil(result.count / size),
+                currentPage: page,
+                data: result.rows
+            });
+        } catch (error: unknown) {
+            const mensagem = error instanceof Error ? error.message : "Erro ao buscar produtos por categoria";
+            res.status(400).send({ mensagem });
+        }
+    }
+
     static async createProduct(req: Request, res: Response): Promise<void> {
         try {
 

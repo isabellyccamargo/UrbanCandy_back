@@ -1,32 +1,51 @@
 import { Router } from "express";
 import ProductController from "../Controllers/ProductController.js";
 import CategoryController from "../Controllers/CategoryController.js";
+import UserController from "../Controllers/UserController.js";
+import PeopleController from "../Controllers/PeopleController.js"
 
-const rotas = Router();
+const routes = Router();
 
 // PRODUTO
-rotas.get("/produto/listar", ProductController.findAllProduct);
+routes.get("/produto/listar", ProductController.findAllProduct);
 
-rotas.get("/produto/destaque", ProductController.findFeaturedProducts);
+routes.get("/produto/destaque", ProductController.findFeaturedProducts);
 
-rotas.get("/produto/listarPorId/:id_product", ProductController.findByIdProduct);
+routes.get("/produto/listarPorId/:id_product", ProductController.findByIdProduct);
 
-rotas.post("/produto/salvar", ProductController.createProduct);
+routes.post("/produto/salvar", ProductController.createProduct);
 
-rotas.put("/produto/atualizar/:id_product", ProductController.updateProduct);
+routes.put("/produto/atualizar/:id_product", ProductController.updateProduct);
 
-rotas.delete("/produto/excluir/:id_product", ProductController.deleteProduct);
+routes.delete("/produto/excluir/:id_product", ProductController.deleteProduct);
+
+routes.get("/category/:categoryName", ProductController.findByCategory);
 
 // CATEGORIA
-rotas.get("/categoria/listar", CategoryController.findAllCategory);
+routes.get("/categoria/listar", CategoryController.findAllCategory);
 
-rotas.get("/categoria/listarPorId/:id_category", CategoryController.findByIdCategory);
+routes.get("/categoria/listarPorId/:id_category", CategoryController.findByIdCategory);
 
-rotas.post("/categoria/salvar", CategoryController.createCategory);
+routes.post("/categoria/salvar", CategoryController.createCategory);
 
-rotas.put("/categoria/atualizar/:idCategory", CategoryController.updateCategory);
+routes.put("/categoria/atualizar/:idCategory", CategoryController.updateCategory);
 
-rotas.delete("/categoria/excluir/:id_category", CategoryController.deleteCategory);
+routes.delete("/categoria/excluir/:id_category", CategoryController.deleteCategory);
 
+// USUÁRIO
+routes.get("/usuario/listar", UserController.findAllUsers);
 
-export default rotas;
+routes.get("/usuario/listar", UserController.findByIdUser);
+
+routes.post("/usuario/salvar", UserController.createUser);
+
+routes.delete("/usuario/excluir/:id_user", UserController.deleteUser);
+
+// PESSOA 
+routes.get("/pessoa/listar", PeopleController.findAllPeople);
+
+routes.get("/pessoa/listarPorId/:id_people", PeopleController.findByIdPeople);
+
+routes.put("/pessoa/atualizar/:id_people", PeopleController.updatePeople);
+
+export default routes;

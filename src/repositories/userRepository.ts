@@ -1,38 +1,46 @@
-import User from "../Models/Users.js"
+import Users from "../Models/Users.js";
+import People from "../Models/People.js";
 
-export interface userData {
-    email: string;
-    password: string;
+class UserRepository {
+    async findAllUsers(limit: number, offset: number) {
+        return await Users.findAndCountAll({
+            limit: limit,
+            offset: offset,
+            order: [['id_user', 'ASC']],
+            attributes: { exclude: ['password'] } 
+        });
+    }
+
+    async findByIdUser(id_user: number) {
+        return await Users.findByPk(id_user, {
+            attributes: { exclude: ['password'] }
+        });
+    }
+
+    async findByEmail(email: string) {
+        return await Users.findOne({ where: { email } });
+    }
+
+    async findByCpf(cpf: string) {
+        return await People.findOne({ where: { cpf } });
+    }
+
+    async createUser(user: Users, people: People) {
+        const newUser = await user.save();
+        people.id_user = newUser.id_user;
+        await people.save();
+        return newUser;
+    }
+
+    async updateUser(id_user: number, userData: Partial<Users>, personData: Partial<People>) {
+        await Users.update(userData, { where: { id_user } });
+        await People.update(personData, { where: { id_user } });
+    }
+
+    async deleteUser(id_user: number) {
+        await People.destroy({ where: { id_user } });
+        return await Users.destroy({ where: { id_user } });
+    }
 }
 
-class userRepository {
-    static async findAll(limit: number = 10, offset: number = 0) {
-        return await User.findAll({ limit, offset });
-    };
-
-    static async findByIdUser(id: number) {
-        return await User.findByPk(id);
-    };
-
-    static async findByEmail(email: string) {
-        return await User.findOne({ where: { email } });
-    };
-
-    static async createUser(userData: userData) {
-        return await User.create(userData);
-    };
-
-    static async update(id: number, userData: Partial<userData>) {
-        return await User.update(userData, {
-            where: { id_usuario: id }
-        });
-    }
-
-    static async delete(id: number) {
-        return await User.destroy({
-            where: { id_usuario: id }
-        });
-    }
-};
-
-export default userRepository;
+export default new UserRepository();
