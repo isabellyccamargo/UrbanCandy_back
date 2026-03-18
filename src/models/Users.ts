@@ -17,7 +17,8 @@ Users.init(
         },
         email: {
             type: DataTypes.STRING(150),
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         password: {
             type: DataTypes.STRING(100),

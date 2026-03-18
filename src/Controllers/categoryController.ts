@@ -1,77 +1,99 @@
-import { type Request, type Response } from "express";
+import {type Request, type Response, type NextFunction } from "express";
 import CategoryService from "../Service/CategoryService.js";
-import Categories from "../Models/Categories.js"
+import Categories from "../Models/Categories.js";
+import { ApiException } from "../Exception/ApiException.js";
 
 class CategoryController {
 
-    static async findAllCategory(req: Request, res: Response) {
+    static async findAllCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { page, size } = req.query;
-
-            const pageNumber = Number(page) || 1;
-            const sizeNumber = Number(size) || 10;
+            const pageNumber: number = Number(page) || 1;
+            const sizeNumber: number = Number(size) || 10;
 
             const result = await CategoryService.findAllCategory(pageNumber, sizeNumber);
-
-            res.send({
+            res.status(200).json({
                 totalItems: result.count,
                 totalPages: Math.ceil(result.count / sizeNumber),
                 currentPage: pageNumber,
                 data: result.rows
             });
-        } catch (error: unknown) {
-            res.status(500).send({ mensagem: "Erro ao buscar categorias." });
+        } catch (error) {
+            next(error);
         }
-
     }
 
-
-    static async findByIdCategory(req: Request, res: Response) {
+    static async findByIdCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_category } = req.params;
-            const categories = await CategoryService.findByIdCategory(Number(id_category));
-            res.send(categories);
-        } catch (error: unknown) {
-            const mensagem = error instanceof Error ? error.message : "Categoria não encontrada";
-            res.status(404).send({ mensagem });
+            if (!id_category || Array.isArray(id_category)) {
+                throw new ApiException("INVALID_ID", 400, "id_category");
+            }
+
+            const id: number = Number(id_category);
+            if (Number.isNaN(id)) {
+                throw new ApiException("INVALID_ID", 400, id_category);
+            }
+
+            const category = await CategoryService.findByIdCategory(id);
+            if (!category) {
+                throw new ApiException("CATEGORY_NOT_FOUND", 404, id);
+            }
+            res.status(200).json(category);
+        } catch (error) {
+            next(error);
         }
     }
 
-    static async createCategory(req: Request, res: Response) {
+    static async createCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const categoryInstance = Categories.build(req.body);
             const newCategory = await CategoryService.createCategory(categoryInstance);
 
-            res.status(201).send(newCategory);
-        } catch (error: unknown) {
-            const mensagem = error instanceof Error ? error.message : "Erro ao criar categoria";
-            res.status(400).send({ mensagem });
+            res.status(201).json(newCategory);
+        } catch (error) {
+            next(error);
         }
     }
 
-    static async updateCategory(req: Request, res: Response) {
+    static async updateCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { idCategory } = req.params;
+            if (!idCategory || Array.isArray(idCategory)) {
+                throw new ApiException("INVALID_ID", 400, "idCategory");
+            }
+
+            const id: number = Number(idCategory);
+            if (Number.isNaN(id)) {
+                throw new ApiException("INVALID_ID", 400, idCategory);
+            }
+
             const categoryInstance = Categories.build(req.body);
+            await CategoryService.updateCategory(id, categoryInstance);
+            res.status(200).json({
+                message: "Categoria atualizada com sucesso"
+            });
 
-            await CategoryService.updateCategory(Number(idCategory), categoryInstance);
-
-            res.send({ mensagem: "Categoria atualizada com sucesso!" });
-        } catch (error: unknown) {
-            const mensagem = error instanceof Error ? error.message : "Erro ao atualizar categoria";
-            res.status(400).send({ mensagem });
+        } catch (error) {
+            next(error);
         }
     }
 
-    static async deleteCategory(req: Request, res: Response) {
+    static async deleteCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_category } = req.params;
+            if (!id_category || Array.isArray(id_category)) {
+                throw new ApiException("INVALID_ID", 400, "id_category");
+            }
 
-            await CategoryService.deleteCategory(Number(id_category));
-            res.status(204).send({ mensagem: "Categoria excluida com sucesso!" });
-        } catch (error: unknown) {
-            const mensagem = error instanceof Error ? error.message : "Erro ao excluir categoria";
-            res.status(400).send({ mensagem });
+            const id: number = Number(id_category);
+            if (Number.isNaN(id)) {
+                throw new ApiException("INVALID_ID", 400, id_category);
+            }
+            await CategoryService.deleteCategory(id);
+            res.status(204).send();
+        } catch (error) {
+            next(error);
         }
     }
 }

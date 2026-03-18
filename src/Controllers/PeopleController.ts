@@ -1,47 +1,69 @@
-import { type Request, type Response } from "express";
+import { type Request, type Response, type NextFunction } from "express";
 import PeopleService from "../Service/PeopleService.js";
 import People from "../Models/People.js";
+import { ApiException } from "../Exception/ApiException.js";
 
 class PeopleController {
 
-    static async findAllPeople(req: Request, res: Response) {
+    static async findAllPeople(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { page, size } = req.query;
-            const pageNumber = Number(page) || 1;
-            const sizeNumber = Number(size) || 10;
+            const pageNumber: number = Number(page) || 1;
+            const sizeNumber: number = Number(size) || 10;
 
             const result = await PeopleService.findAllPeople(pageNumber, sizeNumber);
-
-            res.send({
+            res.status(200).json({
                 totalItems: result.count,
                 totalPages: Math.ceil(result.count / sizeNumber),
                 currentPage: pageNumber,
                 data: result.rows
             });
-        } catch (error: any) {
-            res.status(500).send({ mensagem: "Erro ao buscar pessoas." });
+        } catch (error) {
+            next(error);
         }
     }
 
-    static async findByIdPeople(req: Request, res: Response) {
+    static async findByIdPeople(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_people } = req.params;
-            const person = await PeopleService.findByIdPeople(Number(id_people));
-            res.send(person);
-        } catch (error: any) {
-            res.status(404).send({ mensagem: error.message });
+            if (!id_people || Array.isArray(id_people)) {
+                throw new ApiException("INVALID_ID", 400, "id_people");
+            }
+
+            const id: number = Number(id_people);
+            if (Number.isNaN(id)) {
+                throw new ApiException("INVALID_ID", 400, id_people);
+            }
+
+            const person = await PeopleService.findByIdPeople(id);
+            if (!person) {
+                throw new ApiException("PEOPLE_NOT_FOUND", 404, id);
+            }
+            res.status(200).json(person);
+        } catch (error) {
+            next(error);
         }
     }
 
-    static async updatePeople(req: Request, res: Response) {
+    static async updatePeople(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_people } = req.params;
+            if (!id_people || Array.isArray(id_people)) {
+                throw new ApiException("INVALID_ID", 400, "id_people");
+            }
+
+            const id: number = Number(id_people);
+            if (Number.isNaN(id)) {
+                throw new ApiException("INVALID_ID", 400, id_people);
+            }
+
             const peopleInstance = People.build(req.body);
-
-            await PeopleService.updatePeople(Number(id_people), peopleInstance);
-            res.send({ mensagem: "Dados pessoais atualizados com sucesso!" });
-        } catch (error: any) {
-            res.status(400).send({ mensagem: error.message });
+            await PeopleService.updatePeople(id, peopleInstance);
+            res.status(200).json({
+                message: "Dados pessoais atualizados com sucesso"
+            });
+        } catch (error) {
+            next(error);
         }
     }
 }

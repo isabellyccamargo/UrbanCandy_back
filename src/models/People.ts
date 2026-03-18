@@ -47,10 +47,4 @@ People.init(
 }
 );
 
-import Users from "./Users.js";
-import Address from "./Address.js";
-
-People.belongsTo(Address, { foreignKey: "id_address", as: "address" });
-People.belongsTo(Users, { foreignKey: "id_user", as: "users" });
-
 export default People;

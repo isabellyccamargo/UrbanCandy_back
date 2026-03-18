@@ -36,7 +36,7 @@ Address.init(
         },
         complement: {
             type: DataTypes.STRING(255),
-            allowNull: false
+            allowNull: true
         },
         number: {
             type: DataTypes.BIGINT,

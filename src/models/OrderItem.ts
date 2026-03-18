@@ -2,11 +2,11 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "../Config/Config.js";
 
 class OrderItem extends Model {
-    declare id_itemPedido: string;
+    declare id_orderItem: number;
     declare id_pedido: number;
     declare id_produto: number;
-    declare quantidade: number;
-    declare preco_unitario: number;
+    declare quantity: number;
+    declare unit_price: number;
     declare sub_total: Number;
 };
 

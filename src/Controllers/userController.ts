@@ -1,59 +1,93 @@
-import { type Request, type Response } from "express";
+import { type Request, type Response, type NextFunction } from "express";
 import UserService from "../Service/UserService.js";
-import Users from "../Models/Users.js";
-import People from "../Models/People.js";
+import { ApiException } from "../Exception/ApiException.js";
 
 class UserController {
-    static async findAllUsers(req: Request, res: Response) {
+
+    static async login(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { email, password } = req.body;
+            if (!email || !password) {
+                throw new ApiException("REQUIRED_FIELD", 400, "email/password");
+            }
+            const result = await UserService.login(email, password);
+            res.status(200).json(result);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    static async findAllUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { page, size } = req.query;
-            const pageNumber = Number(page) || 1;
-            const sizeNumber = Number(size) || 10;
-
+            const pageNumber: number = Number(page) || 1;
+            const sizeNumber: number = Number(size) || 10;
             const result = await UserService.findAllUsers(pageNumber, sizeNumber);
-
-            res.send({
+            res.status(200).json({
                 totalItems: result.count,
                 totalPages: Math.ceil(result.count / sizeNumber),
                 currentPage: pageNumber,
                 data: result.rows
             });
-        } catch (error: any) {
-            res.status(500).send({ mensagem: "Erro ao buscar usuários." });
+        } catch (error) {
+            next(error);
         }
     }
 
-    static async findByIdUser(req: Request, res: Response) {
+    static async findByIdUser(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_user } = req.params;
-            const user = await UserService.findByIdUser(Number(id_user));
-            res.status(200).send(user); 
-        } catch (error: any) {
-            res.status(404).send({ mensagem: error.message });
+            if (!id_user || Array.isArray(id_user)) {
+                throw new ApiException("INVALID_ID", 400, "id_user");
+            }
+
+            const id: number = Number(id_user);
+            if (Number.isNaN(id)) {
+                throw new ApiException("INVALID_ID", 400, id_user);
+            }
+
+            const user = await UserService.findByIdUser(id);
+            if (!user) {
+                throw new ApiException("USER_NOT_FOUND", 404, id);
+            }
+            res.status(200).json(user);
+        } catch (error) {
+            next(error);
         }
     }
 
-    static async createUser(req: Request, res: Response) {
+    static async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const userInstance = Users.build(req.body);
-            const peopleInstance = People.build(req.body);
-
-            const newUser = await UserService.createUser(userInstance, peopleInstance);
-            res.status(201).send({ mensagem: "Usuário e Pessoa cadastrados com sucesso!", id: newUser.id_user });
-        } catch (error: any) {
-            res.status(400).send({ mensagem: error.message });
+            const newUser = await UserService.createUser(req.body);
+            res.status(201).json({
+                message: "Cadastro completo (Usuário, Pessoa e Endereço) realizado com sucesso",
+                id: newUser.id_user
+            });
+        } catch (error) {
+            next(error);
         }
     }
 
-    static async deleteUser(req: Request, res: Response) {
+    static async updateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_user } = req.params;
-            await UserService.deleteUser(Number(id_user));
-            res.status(204).send();
-        } catch (error: any) {
-            res.status(400).send({ mensagem: error.message });
+            if (!id_user || Array.isArray(id_user)) {
+                throw new ApiException("INVALID_ID", 400, "id_user");
+            }
+
+            const id: number = Number(id_user);
+            if (Number.isNaN(id)) {
+                throw new ApiException("INVALID_ID", 400, id_user);
+            }
+            await UserService.updateUser(id, req.body.userData, req.body.personData);
+            res.status(200).json({
+                message: "Usuário atualizado com sucesso"
+            });
+        } catch (error) {
+            next(error);
         }
     }
+
 }
 
 export default UserController;

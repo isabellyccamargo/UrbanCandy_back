@@ -27,17 +27,11 @@ class PeopleRepository {
     async createPeople(people: People) {
         return await people.save();
     }
-
-    async updatePeople(idPeople: number, people: People) {
+    
+    async updatePeople(idPeople: number, peopleData: Partial<People>) {
         return await People.update(
-            {
-                name: people.name,
-                telephone: people.telephone,
-                id_address: people.id_address
-            },
-            {
-                where: { id_people: idPeople }
-            }
+            peopleData,
+            { where: { id_people: idPeople } }
         );
     }
 
