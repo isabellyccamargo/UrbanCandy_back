@@ -3,6 +3,7 @@ import ProductController from "../Controllers/ProductController.js";
 import CategoryController from "../Controllers/CategoryController.js";
 import UserController from "../Controllers/UserController.js";
 import PeopleController from "../Controllers/PeopleController.js";
+import OrderController from "../Controllers/OrderController.js";
 
 const routes = Router();
 
@@ -36,5 +37,10 @@ routes.put("/usuario/atualizar/:id_user", UserController.updateUser);
 routes.get("/pessoa/listar", PeopleController.findAllPeople);
 routes.get("/pessoa/listarPorId/:id_people", PeopleController.findByIdPeople);
 routes.put("/pessoa/atualizar/:id_people", PeopleController.updatePeople);
+
+routes.post("/pedido/checkout", OrderController.store);
+routes.get("/pedido/listar", OrderController.findAllOrders);
+routes.get("/pedido/listarPorId/:id_orders",OrderController.findByIdOrder);
+
 
 export default routes;
