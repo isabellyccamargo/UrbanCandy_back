@@ -1,4 +1,4 @@
-import { type Request,type Response, type NextFunction } from "express";
+import { type Request, type Response, type NextFunction } from "express";
 import ProductService from "../Service/ProductService.js";
 import Products from "../Models/Products.js";
 import { ApiException } from "../Exception/ApiException.js";
@@ -80,17 +80,23 @@ class ProductController {
             next(error);
         }
     }
-
     static async createProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const productInstance = Products.build(req.body);
+            const dados = req.body;
+
+            const file = (req as any).file;
+
+            if (file) {
+                dados.image = file.filename;
+            }
+
+            const productInstance = Products.build(dados);
             const newProduct = await ProductService.createProduct(productInstance);
             res.status(201).json(newProduct);
         } catch (error) {
             next(error);
         }
     }
-
     static async updateProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_product } = req.params;

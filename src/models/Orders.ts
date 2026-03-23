@@ -41,8 +41,5 @@ Orders.init(
 }
 );
 
-import cliente from "./People.js";
-
-Orders.belongsTo(cliente, { foreignKey: "id_people", as: "people" });
 
 export default Orders;

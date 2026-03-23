@@ -6,6 +6,7 @@ import publico from "./src/Routes/Public.js";
 import { dataBaseConectionn } from "./src/Config/Config.js";
 import { setupAssociations } from "./src/Models/Associations.js";
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

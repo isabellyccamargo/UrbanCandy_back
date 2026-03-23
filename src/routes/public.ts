@@ -1,14 +1,28 @@
-import { Router } from "express";
+import {  Router,type  Request, type Response } from "express"; 
+import multer from 'multer';
+import path from 'path';
 import ProductController from "../Controllers/ProductController.js";
 import CategoryController from "../Controllers/CategoryController.js";
 import UserController from "../Controllers/UserController.js";
 import PeopleController from "../Controllers/PeopleController.js";
 import OrderController from "../Controllers/OrderController.js";
 
+
 const routes = Router();
 
+const storage = multer.diskStorage({
+    destination: (req: Request, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req: Request, file, cb) => {
+        cb(null, Date.now() + "-" + file.originalname);
+    }
+});
+
+const upload = multer({ storage });
+
 // --- ROTAS DE LOGIN E CADASTRO (Públicas )
-routes.post("/login", UserController.login); 
+routes.post("/login", UserController.login);
 routes.post("/usuario/salvar", UserController.createUser);
 
 // --- PRODUTO ---
@@ -17,8 +31,9 @@ routes.get("/produto/destaque", ProductController.findFeaturedProducts);
 routes.get("/produto/listarPorId/:id_product", ProductController.findByIdProduct);
 routes.get("/produto/categoria/:categoryName", ProductController.findByCategory);
 // Admin ou logado (No Front você esconde os botões)
-routes.post("/produto/salvar", ProductController.createProduct);
-routes.put("/produto/atualizar/:id_product", ProductController.updateProduct);
+routes.post("/produto/salvar", upload.single('image'), ProductController.createProduct);
+// E a de atualizar também
+routes.put("/produto/atualizar/:id_product", upload.single('image'), ProductController.updateProduct);
 routes.delete("/produto/excluir/:id_product", ProductController.deleteProduct);
 
 // --- CATEGORIA ---
@@ -40,7 +55,7 @@ routes.put("/pessoa/atualizar/:id_people", PeopleController.updatePeople);
 
 routes.post("/pedido/checkout", OrderController.store);
 routes.get("/pedido/listar", OrderController.findAllOrders);
-routes.get("/pedido/listarPorId/:id_orders",OrderController.findByIdOrder);
+routes.get("/pedido/listarPorId/:id_orders", OrderController.findByIdOrder);
 
 
 export default routes;

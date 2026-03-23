@@ -45,10 +45,4 @@ OrderItem.init(
 }
 );
 
-import pedidos from "./Orders.js";
-import produtos from "./Products.js";
-
-OrderItem.belongsTo(pedidos, { foreignKey: "id_order", as: "orders" });
-OrderItem.belongsTo(produtos, { foreignKey: "id_product", as: "products" });
-
 export default OrderItem;
