@@ -1,0 +1,81 @@
+import { jest, describe, it, expect, beforeEach } from '@jest/globals';
+import ProdutoServico from "../src/Service/ProductService.js";
+import ProductRepository from "../src/Repositories/ProductRepository.js";
+import CategoryRepository from "../src/Repositories/CategoryRepository.js";
+
+describe("Produto", () => {
+  
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.restoreAllMocks(); 
+  });
+
+  // --- TESTES DE CRIAÇÃO (Create) ---
+  it("deve lançar erro se o preço for zero ou negativo na criação", async () => {
+    const p: any = { name: "Erro", price: 0, stock_number: 1, id_category: 1 };
+    await expect(ProdutoServico.createProduct(p)).rejects.toThrow("O preço deve ser um valor positivo.");
+  });
+
+  it("deve criar produto se categoria existir e dados forem válidos", async () => {
+    const p: any = { name: "Cadeira", price: 100, stock_number: 10, id_category: 1 };
+    jest.spyOn(CategoryRepository, 'findByIdCategory').mockResolvedValue({ id_category: 1 } as any);
+    jest.spyOn(ProductRepository, 'createProduct').mockResolvedValue({ id_product: 50, ...p } as any);
+
+    const res = await ProdutoServico.createProduct(p);
+    expect(res).toHaveProperty("id_product", 50);
+  });
+
+  // --- TESTES DE BUSCA (Read) ---
+  it("deve formatar o nome da categoria corretamente ao buscar por categoria", async () => {
+    const spy = jest.spyOn(ProductRepository, 'findByByCategory').mockResolvedValue({ count: 1, rows: [] } as any);
+    
+    // Testamos se ele transforma "GAMES" ou "games" em "Games"
+    await ProdutoServico.findByCategory("GAMES", 1, 10);
+    
+    expect(spy).toHaveBeenCalledWith("Games", 10, 0); // O Service faz o cálculo do offset
+  });
+
+  it("deve lançar erro ao buscar por ID se o produto não existir", async () => {
+    jest.spyOn(ProductRepository, 'findByIdProduct').mockResolvedValue(null);
+
+    await expect(ProdutoServico.findByIdProduct(999))
+      .rejects.toThrow("Produto não encontrado.");
+  });
+
+  // --- TESTES DE ATUALIZAÇÃO (Update) ---
+  it("deve validar os dados antes de atualizar um produto", async () => {
+    const p: any = { id_product: 1, name: "", price: 100 }; // Nome vazio
+    
+    // Primeiro ele tenta achar o produto
+    jest.spyOn(ProductRepository, 'findByIdProduct').mockResolvedValue({ id_product: 1 } as any);
+
+    await expect(ProdutoServico.updateProduct(p))
+      .rejects.toThrow("O nome do produto é obrigatório.");
+  });
+
+  it("deve atualizar com sucesso quando o produto existe e dados são válidos", async () => {
+    const p: any = { id_product: 1, name: "Editado", price: 50, stock_number: 5, id_category: 1 };
+    
+    jest.spyOn(ProductRepository, 'findByIdProduct').mockResolvedValue(p);
+    const spyUpdate = jest.spyOn(ProductRepository, 'updateProduct').mockResolvedValue([1] as any);
+
+    await ProdutoServico.updateProduct(p);
+    expect(spyUpdate).toHaveBeenCalled();
+  });
+
+  // --- TESTES DE DELEÇÃO (Delete) ---
+  it("deve lançar erro ao tentar deletar produto inexistente", async () => {
+    jest.spyOn(ProductRepository, 'findByIdProduct').mockResolvedValue(null);
+
+    await expect(ProdutoServico.deleteProduct(1))
+      .rejects.toThrow("Produto não encontrado.");
+  });
+
+  it("deve chamar o repositório de deleção se o produto existir", async () => {
+    jest.spyOn(ProductRepository, 'findByIdProduct').mockResolvedValue({ id_product: 1 } as any);
+    const spyDel = jest.spyOn(ProductRepository, 'deleteProduct').mockResolvedValue(1 as any);
+
+    await ProdutoServico.deleteProduct(1);
+    expect(spyDel).toHaveBeenCalledWith(1);
+  });
+});

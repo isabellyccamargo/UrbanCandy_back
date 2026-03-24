@@ -24,10 +24,13 @@ class PeopleService {
 
     async updatePeople(idPeople: number, people: People) {
         if (!idPeople) throw new Error("ID é necessário.");
-        
-        this.validateCPF(people.cpf);
 
-        await this.findByIdPeople(idPeople);
+        const personExists = await this.findByIdPeople(idPeople);
+
+        if (people.cpf && people.cpf !== personExists.cpf) {
+            throw new Error("A alteração de CPF não é permitida.");
+        }
+
         return await PeopleRepository.updatePeople(idPeople, people);
     }
 
