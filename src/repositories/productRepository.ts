@@ -1,18 +1,23 @@
 import Products from "../Models/Products.js";
-import Categories from "../Models/Categories.js"
+import Categories from "../Models/Categories.js";
+
+interface ProductQueryResult {
+    rows: Products[];
+    count: number;
+}
 
 class ProductRepository {
 
     async findAllProduct(limit: number, offset: number) {
-        return await Products.findAndCountAll({
-            limit: limit,
-            offset: offset,
-            order: [['id_product', 'ASC']],
-            include: [{ model: Categories, as: "category" }]
-        });
-    };
+    return await Products.findAndCountAll({
+        limit: limit,   
+        offset: offset,
+        include: [{ all: true }],
+        order: [['id_product', 'ASC']]
+    });
+}
 
-    async findFeaturedProducts(limit: number, offset: number) {
+    async findFeaturedProducts(limit: number, offset: number): Promise<ProductQueryResult> {
         return await Products.findAndCountAll({
             where: { featured: true },
             limit: limit,
@@ -20,18 +25,18 @@ class ProductRepository {
             order: [['id_product', 'ASC']],
             include: [{ model: Categories, as: "category" }]
         });
-    };
+    }
 
-    async findByIdProduct(id_product: number) {
+    async findByIdProduct(id_product: number): Promise<Products | null> {
         return await Products.findByPk(id_product, {
             include: [{ model: Categories, as: "category" }]
         });
-    };
+    }
 
-    async findByByCategory(categoryName: string, limit: number, offset: number) {
+    async findByCategory(categoryName: string, limit: number, offset: number): Promise<ProductQueryResult> {
         return await Products.findAndCountAll({
-            limit: limit,
-            offset: offset,
+            limit,
+            offset,
             order: [['id_product', 'ASC']],
             include: [{
                 model: Categories,
@@ -39,13 +44,13 @@ class ProductRepository {
                 where: { name_category: categoryName }
             }]
         });
-    };
+    }
 
-    async createProduct(product: Products) {
-        return await product.save();;
-    };
+    async createProduct(product: Products): Promise<Products> {
+        return await product.save();
+    }
 
-    async updateProduct(product: Products) {
+    async updateProduct(product: Products): Promise<[number]> {
         return await Products.update(
             {
                 name: product.name,
@@ -60,11 +65,13 @@ class ProductRepository {
                 where: { id_product: product.id_product }
             }
         );
-    };
+    }
 
-    async deleteProduct(id_product: number) {
-        return await Products.destroy({ where: { id_product: id_product } });
-    };
+    async deleteProduct(id_product: number): Promise<number> {
+        return await Products.destroy({
+            where: { id_product }
+        });
+    }
 
 }
 

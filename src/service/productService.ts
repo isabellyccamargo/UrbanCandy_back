@@ -1,63 +1,60 @@
 import ProductRepository from "../Repositories/ProductRepository.js";
 import CategoryRepository from "../Repositories/CategoryRepository.js";
 import Products from "../Models/Products.js";
+import { ApiException } from "../Exception/ApiException.js";
 
-class ProdutoServico {
-    // Função auxiliar
+interface ProductList {
+    rows: Products[];
+    count: number;
+}
+
+class ProductService {
     private validateData(p: Products): void {
-        if (!p.name?.trim()) throw new Error("O nome do produto é obrigatório.");
-        if (p.price <= 0) throw new Error("O preço deve ser um valor positivo.");
-        if (p.stock_number < 0) throw new Error("O estoque não pode ser negativo.");
-        if (!p.id_category) throw new Error("O produto deve ter uma categoria.");
+        if (!p.name?.trim()) throw new ApiException("INVALID_PRODUCT_NAME", 400);
+        if (p.price <= 0) throw new ApiException("INVALID_PRODUCT_PRICE", 400);
+        if (p.stock_number < 0) throw new ApiException("INVALID_PRODUCT_STOCK", 400);
+        if (!p.id_category) throw new ApiException("INVALID_PRODUCT_CATEGORY", 400);
     }
 
-    // Metodos CRUDS
-    async findAllProduct(page: number = 1, size: number = 10) {
-        const limit = size;
+    async findAllProduct(page: number = 1, size: number = 6) {
         const offset = (page - 1) * size;
-        return await ProductRepository.findAllProduct(limit, offset);
+        return await ProductRepository.findAllProduct(size, offset);
     }
 
-    async findFeaturedProducts(page: number = 1, size: number = 10) {
-        const limit = size;
+    async findFeaturedProducts(page: number = 1, size: number = 8): Promise<ProductList> {
         const offset = (page - 1) * size;
-        return await ProductRepository.findFeaturedProducts(limit, offset);
+        return await ProductRepository.findFeaturedProducts(size, offset);
     }
 
-    async findByIdProduct(id_product: number) {
-        if (!id_product) throw new Error("ID inválido para busca.");
-
-        const product = await ProductRepository.findByIdProduct(id_product);
-        if (!product) throw new Error("Produto não encontrado.");
+    async findByIdProduct(id: number): Promise<Products> {
+        const product = await ProductRepository.findByIdProduct(id);
+        if (!product) throw new ApiException("PRODUCT_NOT_FOUND", 404, id);
         return product;
     }
 
-    async findByCategory(categoryName: string, page: number = 1, size: number = 10) {
-        const formattedName = categoryName.charAt(0).toUpperCase() + categoryName.slice(1).toLowerCase();
-
-        const limit = size;
-        const offset = (page - 1) * size;
-
-        return await ProductRepository.findByByCategory(formattedName, limit, offset);
+    async findByCategory(categoryName: string, page: number = 1, size: number = 10): Promise<ProductList> {
+        const name = categoryName.charAt(0).toUpperCase() + categoryName.slice(1).toLowerCase();
+        return await ProductRepository.findByCategory(name, size, (page - 1) * size);
     }
 
-    async createProduct(product: Products) {
+    async createProduct(product: Products): Promise<Products> {
         this.validateData(product);
-        const category = await CategoryRepository.findByIdCategory(Number(product.id_category));
-        if (!category) throw new Error("A categoria informada não existe.");
+        const categoryId = Number(product.id_category);
+        const category = await CategoryRepository.findByIdCategory(categoryId);
+        if (!category) throw new ApiException("CATEGORY_NOT_FOUND", 404, categoryId);
         return await ProductRepository.createProduct(product);
     }
 
-    async updateProduct(product: Products) {
+    async updateProduct(product: Products): Promise<[number]> {
         await this.findByIdProduct(product.id_product);
         this.validateData(product);
         return await ProductRepository.updateProduct(product);
     }
 
-    async deleteProduct(id: number) {
+    async deleteProduct(id: number): Promise<number> {
         await this.findByIdProduct(id);
         return await ProductRepository.deleteProduct(id);
     }
 }
 
-export default new ProdutoServico();
+export default new ProductService();

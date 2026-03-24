@@ -1,6 +1,21 @@
 import { ApiException } from "../Exception/ApiException.js";
 import OrderRepository from "../Repositories/OrderRepository.js";
-import { type ICart } from "../Types/IOrders.js";
+
+interface ICartItem {
+    id_product: number;
+    quantity: number;
+    sub_total: number;
+    products: {
+        price: number;
+        name: string;
+    };
+}
+
+ interface ICart {
+    items: ICartItem[];
+    total: number;
+}
+
 
 class OrderService {
     static async checkout(id_people: number, cart: ICart, type_payment: string): Promise<any> {

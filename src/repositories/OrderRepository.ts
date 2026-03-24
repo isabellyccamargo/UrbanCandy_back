@@ -4,7 +4,16 @@ import OrderItem from "../Models/OrderItem.js";
 import Products from "../Models/Products.js";
 import sequelize from "../Config/Config.js";
 import { Transaction } from "sequelize";
-import { type ICartItem } from "../Types/IOrders.js";
+
+interface ICartItem {
+    id_product: number;
+    quantity: number;
+    sub_total: number;
+    products: {
+        price: number;
+        name: string;
+    };
+}
 
 class OrderRepository {
     private async _createItems(id_order: number, items: any[], t: Transaction): Promise<void> {

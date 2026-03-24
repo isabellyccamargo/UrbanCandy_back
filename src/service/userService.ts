@@ -3,6 +3,7 @@ import Users from "../Models/Users.js";
 import People from "../Models/People.js";
 import bcrypt from "bcrypt";
 import Address from "../Models/Address.js";
+import { ApiException } from "../Exception/ApiException.js";
 
 interface UserWithProfile extends Users {
     people?: {
@@ -29,27 +30,27 @@ class UserService {
     // FUNÇÃO AUXILIARES
     private validateEmail(email: string) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!regex.test(email)) throw new Error("Formato de e-mail inválido! ");
+        if (!regex.test(email)) throw new ApiException("INVALID_EMAIL", 400);
     }
 
     private validateCPF(cpf: string) {
-        if (!cpf || cpf.length !== 11) throw new Error("CPF deve conter 11 dígitos! ");
+        if (!cpf || cpf.length !== 11) throw new ApiException("INVALID_CPF", 400);
     }
 
     private validatePasswordLevel(password: string) {
         const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         if (!regex.test(password)) {
-            throw new Error("A senha deve ter no mínimo 8 caracteres, incluindo letras e números.");
+            throw new ApiException("INVALID_PASSWORD", 400);
         }
     }
 
     async login(email: string, password: string) {
         const user = await UserRepository.findByEmail(email) as UserWithProfile;
 
-        if (!user) throw new Error("E-mail ou senha incorretos.");
+        if (!user) throw new ApiException("USER_NOT_FOUND", 404);
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) throw new Error("E-mail ou senha incorretos.");
+        if (!isPasswordValid) throw new ApiException("INVALID_CREDENTIALS", 401);
 
         return {
             id_user: user.id_user,
@@ -69,17 +70,17 @@ class UserService {
     async createUser(allData: IUserRegistration): Promise<Users> {
         this.validateEmail(allData.email);
         this.validateCPF(allData.cpf);
-        if (!allData.password) throw new Error("A senha é obrigatória.");
+        if (!allData.password) throw new ApiException("PASSWORD_REQUIRED", 400);
         this.validatePasswordLevel(allData.password);
 
         const userExists = await UserRepository.findByEmail(allData.email);
         if (userExists) {
-            throw new Error("Este endereço de e-mail já está cadastrado em nossa plataforma.");
+            throw new ApiException("EMAIL_ALREADY_EXISTS", 409);
         }
 
         const cpfExists = await UserRepository.findByCpf(allData.cpf);
         if (cpfExists) {
-            throw new Error("O CPF informado já pertence a uma conta ativa.");
+            throw new ApiException("CPF_ALREADY_EXISTS", 409);
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -110,7 +111,7 @@ class UserService {
     }
 
     async updateUser(id_user: number, userData: Partial<Users>, personData: Partial<People>) {
-        if (userData.email) throw new Error("A alteração de e-mail não é permitida.");
+        if (userData.email) throw new ApiException("EMAIL_CHANGE_NOT_ALLOWED", 403);
 
         if (userData.password) {
             this.validatePasswordLevel(userData.password);
@@ -124,7 +125,7 @@ class UserService {
     async findByIdUser(id_user: number) {
         // Agora o Repositório já traz tudo (User + People + Address)
         const user = await UserRepository.findByIdUser(id_user);
-        if (!user) throw new Error("Usuário não encontrado.");
+        if (!user) throw new ApiException("USER_NOT_FOUND", 404);
         return user;
     }
 }

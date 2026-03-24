@@ -1,4 +1,4 @@
-import {  Router,type  Request, type Response } from "express"; 
+import { Router, type Request, type Response } from "express";
 import multer from 'multer';
 import path from 'path';
 import ProductController from "../Controllers/ProductController.js";

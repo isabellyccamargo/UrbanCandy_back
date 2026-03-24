@@ -3,144 +3,101 @@ import ProductService from "../Service/ProductService.js";
 import Products from "../Models/Products.js";
 import { ApiException } from "../Exception/ApiException.js";
 
-class ProductController {
+interface PaginatedResult {
+    rows: Products[];
+    count: number;
+}
 
-    static async findAllProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
+class ProductController {
+    private static parseId = (req: Request): number => {
+        const { id_product } = req.params;
+        const id = Number(id_product);
+
+        if (!id_product || isNaN(id)) {
+            throw new ApiException("INVALID_ID", 400, String(req.params.id_product || ""));
+        }
+        return id;
+    };
+
+    private static format = (res: Response, result: PaginatedResult, page: number, size: number): Response => {
+        return res.status(200).json({
+            totalItems: result.count,
+            totalPages: Math.ceil(result.count / size),
+            currentPage: page,
+            data: result.rows
+        });
+    };
+
+    static findAllProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const page: number = Number(req.query.page) || 1;
-            const size: number = Number(req.query.size) || 10;
+            const page = Number(req.query.page) || 1;
+            const size = Number(req.query.size) || 6;
+
             const result = await ProductService.findAllProduct(page, size);
 
             res.status(200).json({
+                data: result.rows,
                 totalItems: result.count,
                 totalPages: Math.ceil(result.count / size),
-                currentPage: page,
-                data: result.rows
+                currentPage: page
             });
         } catch (error) {
             next(error);
         }
-    }
-
-    static async findFeaturedProducts(req: Request, res: Response, next: NextFunction): Promise<void> {
+    };
+    
+    static findFeaturedProducts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const page: number = Number(req.query.page) || 1;
-            const size: number = Number(req.query.size) || 10;
+            const page = Number(req.query.page) || 1;
+            const size = Number(req.query.size) || 6;
             const result = await ProductService.findFeaturedProducts(page, size);
+            this.format(res, result, page, size);
+        } catch (error) { next(error); }
+    };
 
-            res.status(200).json({
-                totalItems: result.count,
-                totalPages: Math.ceil(result.count / size),
-                currentPage: page,
-                data: result.rows
-            });
-        } catch (error) {
-            next(error);
-        }
-    }
-
-    static async findByIdProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static findByIdProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const { id_product } = req.params;
-            if (!id_product || Array.isArray(id_product)) {
-                throw new ApiException("INVALID_ID", 400, "id_product");
-            }
-
-            const id: number = Number(id_product);
-            if (Number.isNaN(id)) {
-                throw new ApiException("INVALID_ID", 400, id_product);
-            }
-
+            const id = this.parseId(req);
             const product = await ProductService.findByIdProduct(id);
-            if (!product) {
-                throw new ApiException("PRODUCT_NOT_FOUND", 404, id);
-            }
             res.status(200).json(product);
-        } catch (error) {
-            next(error);
-        }
-    }
+        } catch (error) { next(error); }
+    };
 
-    static async findByCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static findByCategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const { categoryName } = req.params;
-            if (!categoryName || Array.isArray(categoryName)) {
-                throw new ApiException("INVALID_CATEGORY", 400, "categoryName");
-            }
-            const page: number = Number(req.query.page) || 1;
-            const size: number = Number(req.query.size) || 10;
-            const result = await ProductService.findByCategory(categoryName, page, size);
-            res.status(200).json({
-                totalItems: result.count,
-                totalPages: Math.ceil(result.count / size),
-                currentPage: page,
-                data: result.rows
-            });
-        } catch (error) {
-            next(error);
-        }
-    }
-    static async createProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
+            const page = Number(req.query.page) || 1;
+            const size = Number(req.query.size) || 6;
+            const category = String(req.params.categoryName);
+            const result = await ProductService.findByCategory(category, page, size);
+            this.format(res, result, page, size);
+        } catch (error) { next(error); }
+    };
+
+    static createProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const dados = req.body;
-
-            const file = (req as any).file;
-
-            if (file) {
-                dados.image = file.filename;
-            }
-
-            const productInstance = Products.build(dados);
-            const newProduct = await ProductService.createProduct(productInstance);
+            if (req.file) dados.image = req.file.filename;
+            const newProduct = await ProductService.createProduct(Products.build(dados));
             res.status(201).json(newProduct);
-        } catch (error) {
-            next(error);
-        }
-    }
-    static async updateProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
+        } catch (error) { next(error); }
+    };
+
+    static updateProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const { id_product } = req.params;
-            if (!id_product || Array.isArray(id_product)) {
-                throw new ApiException("INVALID_ID", 400, "id_product");
-            }
+            const id = this.parseId(req);
+            const instance = Products.build({ id_product: id, ...req.body });
+            await ProductService.updateProduct(instance);
+            res.status(200).json({ message: "Produto atualizado com sucesso" });
+        } catch (error) { next(error); }
+    };
 
-            const id: number = Number(id_product);
-            if (Number.isNaN(id)) {
-                throw new ApiException("INVALID_ID", 400, id_product);
-            }
-
-            const productInstance = Products.build({
-                id_product: id,
-                ...req.body
-            });
-            await ProductService.updateProduct(productInstance);
-            res.status(200).json({
-                message: "Produto atualizado com sucesso"
-            });
-
-        } catch (error) {
-            next(error);
-        }
-    }
-
-    static async deleteProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static deleteProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const { id_product } = req.params;
-            if (!id_product || Array.isArray(id_product)) {
-                throw new ApiException("INVALID_ID", 400, "id_product");
-            }
-
-            const id: number = Number(id_product);
-            if (Number.isNaN(id)) {
-                throw new ApiException("INVALID_ID", 400, id_product);
-            }
+            const id = this.parseId(req);
             await ProductService.deleteProduct(id);
             res.status(204).send();
-        } catch (error) {
-            next(error);
-        }
-    }
-
+        } catch (error) { next(error); }
+    };
 }
 
 export default ProductController;

@@ -27,7 +27,7 @@ describe("Produto", () => {
 
   // --- TESTES DE BUSCA (Read) ---
   it("deve formatar o nome da categoria corretamente ao buscar por categoria", async () => {
-    const spy = jest.spyOn(ProductRepository, 'findByByCategory').mockResolvedValue({ count: 1, rows: [] } as any);
+    const spy = jest.spyOn(ProductRepository, 'findByCategory').mockResolvedValue({ count: 1, rows: [] } as any);
     
     // Testamos se ele transforma "GAMES" ou "games" em "Games"
     await ProdutoServico.findByCategory("GAMES", 1, 10);

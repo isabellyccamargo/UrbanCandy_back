@@ -1,9 +1,21 @@
 import { type Request, type Response, type NextFunction } from "express";
 import OrderService from "../Service/OrderService.js";
-import { type ICart } from "../Types/IOrders.js";
 import { ApiException } from "../Exception/ApiException.js";
 
+ interface ICartItem {
+    id_product: number;
+    quantity: number;
+    sub_total: number;
+    products: {
+        price: number;
+        name: string;
+    };
+}
 
+ interface ICart {
+    items: ICartItem[];
+    total: number;
+}
 
 class OrderController {
     private static validateRequest(id: number, cart: ICart): void {
