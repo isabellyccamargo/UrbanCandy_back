@@ -5,16 +5,16 @@ class PeopleRepository {
 
     async findAllPeople(limit: number, offset: number) {
         return await People.findAndCountAll({
-            limit: limit,
+            limit: limit,   
             offset: offset,
-            include: [{ model: Users, as: 'users', attributes: ['email', 'administrator'] }],
+            include: [{ model: Users, as: 'user', attributes: ['email', 'administrator'] }],
             order: [['id_people', 'ASC']]
         });
     }
 
     async findByIdPeople(id_people: number) {
         return await People.findByPk(id_people, {
-            include: [{ model: Users, as: 'users', attributes: ['email'] }]
+            include: [{ model: Users, as: 'user', attributes: ['email'] }]
         });
     }
 
@@ -27,7 +27,7 @@ class PeopleRepository {
     async createPeople(people: People) {
         return await people.save();
     }
-    
+
     async updatePeople(idPeople: number, peopleData: Partial<People>) {
         return await People.update(
             peopleData,

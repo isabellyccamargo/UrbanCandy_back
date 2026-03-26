@@ -48,7 +48,7 @@ class AddressController {
         }
     }
 
-    static async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static async updateAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
 
             const { id_address } = req.params;
@@ -61,7 +61,7 @@ class AddressController {
                 throw new ApiException("INVALID_ID", 400, id_address);
             }
 
-            await AddressService.update(id, req.body);
+            await AddressService.updateAddress(id, req.body);
 
             res.status(200).json({
                 message: "Endereço atualizado com sucesso"

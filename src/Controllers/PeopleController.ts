@@ -57,8 +57,7 @@ class PeopleController {
                 throw new ApiException("INVALID_ID", 400, id_people);
             }
 
-            const peopleInstance = People.build(req.body);
-            await PeopleService.updatePeople(id, peopleInstance);
+            await PeopleService.updatePeople(id, req.body);
             res.status(200).json({
                 message: "Dados pessoais atualizados com sucesso"
             });

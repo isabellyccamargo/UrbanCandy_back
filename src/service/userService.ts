@@ -123,7 +123,6 @@ class UserService {
     }
 
     async findByIdUser(id_user: number) {
-        // Agora o Repositório já traz tudo (User + People + Address)
         const user = await UserRepository.findByIdUser(id_user);
         if (!user) throw new ApiException("USER_NOT_FOUND", 404);
         return user;

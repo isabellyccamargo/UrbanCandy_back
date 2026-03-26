@@ -32,7 +32,7 @@ class AddressService {
         return address;
     }
 
-    async update(id_address: number, data: Partial<Address>): Promise<[number]> {
+    async updateAddress(id_address: number, data: Partial<Address>): Promise<[number]> {
         await this.findById(id_address);
         return await AddressRepository.update(id_address, data);
     }
