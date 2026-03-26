@@ -14,9 +14,11 @@ describe("Order", () => {
         
         try {
             await OrderService.checkout(0, cart, "pix");
-            fail("Deveria ter lançado um erro");
+            // Se não lançar erro, força a falha do teste
+            throw new Error("Deveria ter lançado um erro");
         } catch (error: any) {
-            expect(error.message).toMatch(/Usuário não identificado/);
+            // AJUSTADO: Agora verifica o código técnico retornado
+            expect(error.message).toContain("USER_NOT_FOUND");
         }
     });
 
@@ -25,7 +27,7 @@ describe("Order", () => {
         
         try {
             await OrderService.checkout(1, cart, "");
-            fail("Deveria ter lançado um erro");
+            throw new Error("Deveria ter lançado um erro");
         } catch (error: any) {
             expect(error).toBeDefined();
         }
@@ -36,7 +38,7 @@ describe("Order", () => {
 
         try {
             await OrderService.checkout(1, cartFraude, "cartao");
-            fail("Deveria ter lançado um erro");
+            throw new Error("Deveria ter lançado um erro");
         } catch (error: any) {
             expect(error).toBeDefined();
         }

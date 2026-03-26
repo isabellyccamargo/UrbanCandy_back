@@ -13,7 +13,8 @@ describe("Produto", () => {
   // --- TESTES DE CRIAÇÃO (Create) ---
   it("deve lançar erro se o preço for zero ou negativo na criação", async () => {
     const p: any = { name: "Erro", price: 0, stock_number: 1, id_category: 1 };
-    await expect(ProdutoServico.createProduct(p)).rejects.toThrow("O preço deve ser um valor positivo.");
+    await expect(ProdutoServico.createProduct(p))
+      .rejects.toThrow("INVALID_PRODUCT_PRICE"); // CORRIGIDO
   });
 
   it("deve criar produto se categoria existir e dados forem válidos", async () => {
@@ -32,25 +33,24 @@ describe("Produto", () => {
     // Testamos se ele transforma "GAMES" ou "games" em "Games"
     await ProdutoServico.findByCategory("GAMES", 1, 10);
     
-    expect(spy).toHaveBeenCalledWith("Games", 10, 0); // O Service faz o cálculo do offset
+    expect(spy).toHaveBeenCalledWith("Games", 10, 0); 
   });
 
   it("deve lançar erro ao buscar por ID se o produto não existir", async () => {
     jest.spyOn(ProductRepository, 'findByIdProduct').mockResolvedValue(null);
 
     await expect(ProdutoServico.findByIdProduct(999))
-      .rejects.toThrow("Produto não encontrado.");
+      .rejects.toThrow("PRODUCT_NOT_FOUND"); // CORRIGIDO
   });
 
   // --- TESTES DE ATUALIZAÇÃO (Update) ---
   it("deve validar os dados antes de atualizar um produto", async () => {
     const p: any = { id_product: 1, name: "", price: 100 }; // Nome vazio
     
-    // Primeiro ele tenta achar o produto
     jest.spyOn(ProductRepository, 'findByIdProduct').mockResolvedValue({ id_product: 1 } as any);
 
     await expect(ProdutoServico.updateProduct(p))
-      .rejects.toThrow("O nome do produto é obrigatório.");
+      .rejects.toThrow("INVALID_PRODUCT_NAME"); // CORRIGIDO
   });
 
   it("deve atualizar com sucesso quando o produto existe e dados são válidos", async () => {
@@ -68,7 +68,7 @@ describe("Produto", () => {
     jest.spyOn(ProductRepository, 'findByIdProduct').mockResolvedValue(null);
 
     await expect(ProdutoServico.deleteProduct(1))
-      .rejects.toThrow("Produto não encontrado.");
+      .rejects.toThrow("PRODUCT_NOT_FOUND"); // CORRIGIDO
   });
 
   it("deve chamar o repositório de deleção se o produto existir", async () => {

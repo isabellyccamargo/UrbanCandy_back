@@ -9,8 +9,9 @@ describe("AddressService", () => {
 
     test("deve validar campos obrigatórios na criação do endereço", async () => {
         const incompleto: any = { cep: "12545678", road: "" };
+        
         await expect(AddressService.create(incompleto))
-            .rejects.toThrow("Rua, Cidade e Número são campos obrigatórios.");
+            .rejects.toThrow("REQUIRED_FIELDS_ADDRESS");
     });
 
     test("deve calcular a paginação corretamente", async () => {
@@ -24,7 +25,8 @@ describe("AddressService", () => {
 
     test("deve lançar erro ao deletar endereço não encontrado", async () => {
         jest.spyOn(AddressRepository, 'findById').mockResolvedValue(null);
+        
         await expect(AddressService.delete(50))
-            .rejects.toThrow("Endereço não encontrado.");
+            .rejects.toThrow("ADDRESS_NOT_FOUND");
     });
 });

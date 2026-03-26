@@ -13,8 +13,9 @@ describe("CategoryService", () => {
         it("deve lançar erro se o nome da categoria estiver vazio", async () => {
             const catInvalida: any = { name_category: "" };
             
+            // AJUSTADO: Esperando o código técnico
             await expect(CategoryService.createCategory(catInvalida))
-                .rejects.toThrow("O nome da categoria é obrigatório!");
+                .rejects.toThrow("INVALID_CATEGORY_NAME");
         });
 
         it("deve impedir a criação de categorias com nomes duplicados", async () => {
@@ -22,8 +23,9 @@ describe("CategoryService", () => {
             
             jest.spyOn(CategoryRepository, 'findByName').mockResolvedValue({ id_category: 1, name_category: "Doces" } as any);
 
+            // AJUSTADO: Esperando o código técnico
             await expect(CategoryService.createCategory(cat))
-                .rejects.toThrow("Já existe uma categoria com este nome no sistema!");
+                .rejects.toThrow("CATEGORY_ALREADY_EXISTS");
         });
 
         it("deve criar uma categoria com sucesso se o nome for novo", async () => {
@@ -42,8 +44,9 @@ describe("CategoryService", () => {
         it("deve lançar erro ao buscar uma categoria que não existe", async () => {
             jest.spyOn(CategoryRepository, 'findByIdCategory').mockResolvedValue(null);
 
+            // AJUSTADO: Usando toThrow com o código ou parte da mensagem dinâmica
             await expect(CategoryService.findByIdCategory(999))
-                .rejects.toThrow("Categoria não encontrada.");
+                .rejects.toThrow(/CATEGORY_NOT_FOUND|não existe/);
         });
 
         it("deve permitir deletar se a categoria existir", async () => {
@@ -53,7 +56,7 @@ describe("CategoryService", () => {
             await CategoryService.deleteCategory(1);
             expect(spyDel).toHaveBeenCalledWith(1);
         });
-    });                                                                                                                                                                                                                                                                                    
+    });                                                                                                                                                                                                                                                                                                                                                                                                 
 
     describe("Update", () => {
         it("deve permitir atualizar se o nome for alterado para um que não existe", async () => {
