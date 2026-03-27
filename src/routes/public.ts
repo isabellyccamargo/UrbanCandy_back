@@ -1,64 +1,27 @@
-import { Router, type Request, type Response } from "express";
-import multer from 'multer';
-import path from 'path';
+// src/Routes/PublicRoutes.ts
+import { Router } from "express";
 import ProductController from "../Controllers/ProductController.js";
 import CategoryController from "../Controllers/CategoryController.js";
 import UserController from "../Controllers/UserController.js";
-import PeopleController from "../Controllers/PeopleController.js";
-import OrderController from "../Controllers/OrderController.js";
-import AddressController from "../Controllers/AddressController.js";
-
+import privateRoutes from "./Private.js"; 
 
 const routes = Router();
 
-const storage = multer.diskStorage({
-    destination: (req: Request, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req: Request, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-    }
-});
-
-const upload = multer({ storage });
-
-// --- ROTAS DE LOGIN E CADASTRO (Públicas )
+// --- LOGIN E CADASTRO ---
 routes.post("/login", UserController.login);
 routes.post("/usuario/salvar", UserController.createUser);
 
-// --- PRODUTO ---
+// --- PRODUTO  ---
 routes.get("/produto/listar", ProductController.findAllProduct);
 routes.get("/produto/destaque", ProductController.findFeaturedProducts);
 routes.get("/produto/listarPorId/:id_product", ProductController.findByIdProduct);
 routes.get("/produto/categoria/:categoryName", ProductController.findByCategory);
-// Admin ou logado (No Front você esconde os botões)
-routes.post("/produto/salvar", upload.single('image'), ProductController.createProduct);
-// E a de atualizar também
-routes.put("/produto/atualizar/:id_product", upload.single('image'), ProductController.updateProduct);
-routes.delete("/produto/excluir/:id_product", ProductController.deleteProduct);
 
-// --- CATEGORIA ---
+// --- CATEGORIA---
 routes.get("/categoria/listar", CategoryController.findAllCategory);
 routes.get("/categoria/listarPorId/:id_category", CategoryController.findByIdCategory);
-routes.post("/categoria/salvar", CategoryController.createCategory);
-routes.put("/categoria/atualizar/:idCategory", CategoryController.updateCategory);
-routes.delete("/categoria/excluir/:id_category", CategoryController.deleteCategory);
 
-// --- USUÁRIO
-routes.get("/usuario/listar", UserController.findAllUsers);
-routes.get("/usuario/listarPorId/:id_user", UserController.findByIdUser);
-routes.put("/usuario/atualizar/:id_user", UserController.updateUser);
-
-// --- PESSOA ---
-routes.get("/pessoa/listar", PeopleController.findAllPeople);
-routes.get("/pessoa/listarPorId/:id_people", PeopleController.findByIdPeople);
-routes.put("/pessoa/atualizar/:id_people", PeopleController.updatePeople);
-
-routes.put("/endereco/atualizar/:id_address", AddressController.updateAddress);
-
-routes.post("/pedido/checkout", OrderController.store);
-routes.get("/pedido/listar", OrderController.findAllOrders);
-routes.get("/pedido/listarPorId/:id_orders", OrderController.findByIdOrder);
-
+// Acopla as rotas que exigem token
+routes.use(privateRoutes); 
 
 export default routes;

@@ -56,7 +56,7 @@ describe("UserService", () => {
             } as any);
 
             const result = await UserService.login("user@teste.com", senhaPlana);
-            expect(result.nome).toBe("Fulano");
+            expect(result.user.nome).toBe("Fulano");
         });
 
         test("deve falhar login com senha incorreta", async () => {

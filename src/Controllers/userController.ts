@@ -12,6 +12,7 @@ class UserController {
             }
             const result = await UserService.login(email, password);
             res.status(200).json(result);
+            
         } catch (error) {
             next(error);
         }

@@ -4,6 +4,8 @@ import People from "../Models/People.js";
 import bcrypt from "bcrypt";
 import Address from "../Models/Address.js";
 import { ApiException } from "../Exception/ApiException.js";
+import 'dotenv/config';
+import jwt from "jsonwebtoken";
 
 interface UserWithProfile extends Users {
     people?: {
@@ -52,11 +54,24 @@ class UserService {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) throw new ApiException("INVALID_CREDENTIALS", 401);
 
+        const token = jwt.sign(
+            {
+                id: user.id_user,
+                email: user.email,
+                administrator: user.administrator
+            },
+            process.env.JWT_SECRET! as string,
+            { expiresIn: "30s" }
+        );
+
         return {
-            id_user: user.id_user,
-            email: user.email,
-            administrator: user.administrator,
-            nome: user.people?.name || "Usuário"
+            message: 'Usuário autenticado',
+            token,
+            user: {
+                id_user: user.id_user,
+                nome: user.people?.name || "Usuário",
+                administrator: user.administrator
+            }
         };
     }
 
