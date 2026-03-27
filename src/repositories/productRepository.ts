@@ -56,7 +56,6 @@ class ProductRepository {
                 name: product.name,
                 description: product.description,
                 price: product.price,
-                stock_number: product.stock_number,
                 image: product.image,
                 id_category: product.id_category,
                 featured: product.featured

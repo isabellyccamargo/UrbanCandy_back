@@ -12,13 +12,13 @@ describe("Produto", () => {
 
   // --- TESTES DE CRIAÇÃO (Create) ---
   it("deve lançar erro se o preço for zero ou negativo na criação", async () => {
-    const p: any = { name: "Erro", price: 0, stock_number: 1, id_category: 1 };
+    const p: any = { name: "Erro", price: 0, id_category: 1 };
     await expect(ProdutoServico.createProduct(p))
       .rejects.toThrow("INVALID_PRODUCT_PRICE"); // CORRIGIDO
   });
 
   it("deve criar produto se categoria existir e dados forem válidos", async () => {
-    const p: any = { name: "Cadeira", price: 100, stock_number: 10, id_category: 1 };
+    const p: any = { name: "Cadeira", price: 100, id_category: 1 };
     jest.spyOn(CategoryRepository, 'findByIdCategory').mockResolvedValue({ id_category: 1 } as any);
     jest.spyOn(ProductRepository, 'createProduct').mockResolvedValue({ id_product: 50, ...p } as any);
 
@@ -54,7 +54,7 @@ describe("Produto", () => {
   });
 
   it("deve atualizar com sucesso quando o produto existe e dados são válidos", async () => {
-    const p: any = { id_product: 1, name: "Editado", price: 50, stock_number: 5, id_category: 1 };
+    const p: any = { id_product: 1, name: "Editado", price: 50, id_category: 1 };
     
     jest.spyOn(ProductRepository, 'findByIdProduct').mockResolvedValue(p);
     const spyUpdate = jest.spyOn(ProductRepository, 'updateProduct').mockResolvedValue([1] as any);

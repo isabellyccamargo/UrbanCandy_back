@@ -6,7 +6,6 @@ class Products extends Model {
     declare name: string;
     declare description: string;
     declare price: number;
-    declare stock_number: number;
     declare image: string;
     declare id_category: bigint;
     declare featured: boolean;
@@ -30,10 +29,6 @@ Products.init(
         price: {
             type: DataTypes.DECIMAL(10, 2),
             allowNull: true
-        },
-        stock_number: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
         },
         image: {
             type: DataTypes.STRING(255),

@@ -12,7 +12,6 @@ class ProductService {
     private validateData(p: Products): void {
         if (!p.name?.trim()) throw new ApiException("INVALID_PRODUCT_NAME", 400);
         if (p.price <= 0) throw new ApiException("INVALID_PRODUCT_PRICE", 400);
-        if (p.stock_number < 0) throw new ApiException("INVALID_PRODUCT_STOCK", 400);
         if (!p.id_category) throw new ApiException("INVALID_PRODUCT_CATEGORY", 400);
     }
 
