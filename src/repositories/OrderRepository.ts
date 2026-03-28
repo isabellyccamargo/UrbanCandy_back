@@ -38,10 +38,10 @@ class OrderRepository {
         await OrderItem.bulkCreate(formatted, { transaction: t });
     }
 
-    async createFullOrder(id_people: number, items: ICartItem[], total: number, type_payment: string): Promise<Orders> {
+    async createFullOrder(id_people: number, items: ICartItem[], total: number, id_payment: number): Promise<Orders> {
         const t = await sequelize.transaction();
         try {
-            const order = await Orders.create({ id_people, total, type_payment }, { transaction: t });
+            const order = await Orders.create({ id_people, total, id_payment }, { transaction: t });
 
             await this._createItems(order.id_orders, items, t);
             await t.commit();

@@ -24,13 +24,13 @@ class OrderController {
 
     static async store(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-        const { id_people, cart, type_payment } = req.body;
+        const { id_people, cart, id_payment } = req.body;
         
         OrderController.validateRequest(id_people, cart);
         
-        const payment = type_payment || "Não informado";
+        const payment = id_payment || 0;
 
-        const result = await OrderService.checkout(id_people, cart, payment);
+        const result = await OrderService.checkout(id_people, cart, id_payment);
 
         res.status(201).json({
             message: "Pedido realizado com sucesso!",

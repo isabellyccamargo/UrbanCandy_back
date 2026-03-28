@@ -6,7 +6,7 @@ class Orders extends Model {
     declare id_people: number;
     declare order_date: Date;
     declare total: number;
-    declare type_payment: string;
+    declare id_payment: number;
 };
 
 Orders.init(
@@ -29,8 +29,8 @@ Orders.init(
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
-        type_payment: {
-            type: DataTypes.STRING(50),
+        id_payment: {
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
         }
     }, {
