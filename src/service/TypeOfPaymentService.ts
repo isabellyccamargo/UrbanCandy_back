@@ -20,10 +20,9 @@ class TypeOfPaymentService {
 
     async findAllTypeOfPayment(page: number = 1, size: number = 10): Promise<{ rows: TypeOfPayment[]; count: number }> {
 
-        const limit = size;
         const offset = (page - 1) * size;
 
-        return await TypeOfPaymentRepository.findAllTypeOfPayment(limit, offset);
+        return await TypeOfPaymentRepository.findAllTypeOfPayment(size, offset);
     }
 
     async findByIdTypeOfPayment(typeId: number): Promise<TypeOfPayment> {

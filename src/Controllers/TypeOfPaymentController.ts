@@ -8,20 +8,18 @@ class TypeOfPaymentController {
     static async findAllTypeOfPayment(req: Request, res: Response, next: NextFunction): Promise<void> {
 
         try {
+            const page = Number(req.query.page) || 1;
+            const size = Number(req.query.size) || 6;
 
-            const { page, size } = req.query;
+            const result = await TypeOfPaymentService.findAllTypeOfPayment(page, size);
 
-            const pageNumber: number = Number(page) || 1;
-            const sizeNumber: number = Number(size) || 10;
-
-            const result = await TypeOfPaymentService.findAllTypeOfPayment(pageNumber, sizeNumber);
-
-            res.status(200).json(result.rows); 
+            res.status(200).json(result.rows);
 
         } catch (error) {
             next(error);
         }
     }
+
 
     static async findByIdTypeOfPayment(req: Request, res: Response, next: NextFunction): Promise<void> {
 
