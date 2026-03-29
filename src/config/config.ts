@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 const sequelize = new Sequelize("urbancandy", "root", "ADMIN", {
   host: "localhost",
   dialect: "mysql", 
-  logging: false, 
+  logging: console.log, 
 });
 
 export const dataBaseConectionn = async () => {

@@ -20,7 +20,7 @@ TypeOfPayment.init(
     }, {
     sequelize,
     modelName: "TypeOfPayment",
-    tableName: "TypeOfPayment",
+    tableName: "type_of_payment",
     timestamps: false
 }
 );

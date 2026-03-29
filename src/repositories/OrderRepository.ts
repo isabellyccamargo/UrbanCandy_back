@@ -4,6 +4,7 @@ import OrderItem from "../Models/OrderItem.js";
 import Products from "../Models/Products.js";
 import sequelize from "../Config/Config.js";
 import { Transaction } from "sequelize";
+import TypeOfPayment from "../Models/TypeOfPayment.js";
 
 interface ICartItem {
     id_product: number;
@@ -41,26 +42,53 @@ class OrderRepository {
     async createFullOrder(id_people: number, items: ICartItem[], total: number, id_payment: number): Promise<Orders> {
         const t = await sequelize.transaction();
         try {
-            const order = await Orders.create({ id_people, total, id_payment }, { transaction: t });
+            console.log("--- TENTANDO CRIAR PEDIDO ---");
+            const order = await Orders.create({
+                id_people: Number(id_people),
+                total: Number(total),
+                id_payment: Number(id_payment),
+            }, { transaction: t });
+
+            console.log("Pedido criado ID:", order.id_orders);
 
             await this._createItems(order.id_orders, items, t);
+
             await t.commit();
             return order;
-        } catch (error) {
+        } catch (error: any) {
             await t.rollback();
+            console.error("ERRO AO CRIAR PEDIDO:", error.name, error.message);
             throw error;
         }
     }
 
     async findAllOrders(limit: number, offset: number): Promise<{ rows: Orders[]; count: number }> {
         return await Orders.findAndCountAll({
-            limit,
-            offset,
+            limit: Number(limit),
+            offset: Number(offset),
+            distinct: true,        
+            col: 'id_orders',        
             include: [
-                { model: People, as: "people", attributes: ["id_people", "name"] },
                 {
-                    model: OrderItem, as: "items",
-                    include: [{ model: Products, as: "products", attributes: ["id_product", "name", "price"] }]
+                    model: People,
+                    as: "people",
+                    attributes: ["id_people", "name"]
+                },
+                {
+                    model: TypeOfPayment,
+                    as: "paymentType",
+                    attributes: ["name_payment"]
+                },
+                {
+                    model: OrderItem,
+                    as: "items",
+                    include: [
+                        {
+                            model: Products,
+                            as: "products",
+                            attributes: ["id_product", "name", "description", "price"]
+                        }
+                    ]
                 }
             ],
             order: [["id_orders", "DESC"]]

@@ -6,7 +6,9 @@ import UserController from "../Controllers/UserController.js";
 import PeopleController from "../Controllers/PeopleController.js";
 import OrderController from "../Controllers/OrderController.js";
 import AddressController from "../Controllers/AddressController.js";
+import TypeOfPaymentController from "../Controllers/TypeOfPaymentController.js";
 import multer from 'multer';
+import routes from "./Public.js";
 
 const privateRoutes = Router();
 
@@ -19,11 +21,13 @@ const upload = multer({ storage });
 privateRoutes.use(authMiddleware);
 
 // --- PRODUTO ---
+privateRoutes.get("/produto/listar", ProductController.findAllProduct);
 privateRoutes.post("/produto/salvar", upload.single('image'), ProductController.createProduct);
 privateRoutes.put("/produto/atualizar/:id_product", upload.single('image'), ProductController.updateProduct);
 privateRoutes.delete("/produto/excluir/:id_product", ProductController.deleteProduct);
 
 // --- CATEGORIA  ---
+privateRoutes.get("/categoria/listar", CategoryController.findAllCategory);
 privateRoutes.post("/categoria/salvar", CategoryController.createCategory);
 privateRoutes.put("/categoria/atualizar/:idCategory", CategoryController.updateCategory);
 privateRoutes.delete("/categoria/excluir/:id_category", CategoryController.deleteCategory);
@@ -40,5 +44,12 @@ privateRoutes.put("/endereco/atualizar/:id_address", AddressController.updateAdd
 privateRoutes.post("/pedido/checkout", OrderController.store);
 privateRoutes.get("/pedido/listar", OrderController.findAllOrders);
 privateRoutes.get("/pedido/listarPorId/:id_orders", OrderController.findByIdOrder);
+
+// --- TIPOS DE PAGAMENTO ---
+privateRoutes.post("/pagamento/salvar", TypeOfPaymentController.createTypeOfPayment);
+privateRoutes.put("/pagamento/atualizar/:id_payment", TypeOfPaymentController.updateTypeOfPayment);
+privateRoutes.delete("/pagamento/excluir/:id_payment", TypeOfPaymentController.deleteTypeOfPayment);
+privateRoutes.get("/pagamento/listar", TypeOfPaymentController.findAllTypeOfPayment);
+privateRoutes.get("/pagamento/listarPorId/:id_payment", TypeOfPaymentController.findByIdTypeOfPayment);
 
 export default privateRoutes;

@@ -1,4 +1,4 @@
-import {type Request,type Response,type NextFunction } from "express";
+import { type Request, type Response, type NextFunction } from "express";
 import TypeOfPaymentService from "../Service/TypeOfPaymentService.js";
 import TypeOfPayment from "../Models/TypeOfPayment.js";
 import { ApiException } from "../Exception/ApiException.js";
@@ -16,12 +16,7 @@ class TypeOfPaymentController {
 
             const result = await TypeOfPaymentService.findAllTypeOfPayment(pageNumber, sizeNumber);
 
-            res.status(200).json({
-                totalItems: result.count,
-                totalPages: Math.ceil(result.count / sizeNumber),
-                currentPage: pageNumber,
-                data: result.rows
-            });
+            res.status(200).json(result.rows); 
 
         } catch (error) {
             next(error);

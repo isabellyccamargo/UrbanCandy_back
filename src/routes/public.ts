@@ -21,7 +21,6 @@ routes.get("/produto/categoria/:categoryName", ProductController.findByCategory)
 routes.get("/categoria/listar", CategoryController.findAllCategory);
 routes.get("/categoria/listarPorId/:id_category", CategoryController.findByIdCategory);
 
-// Acopla as rotas que exigem token
 routes.use(privateRoutes); 
 
 export default routes;

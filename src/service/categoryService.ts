@@ -19,10 +19,9 @@ class CategoryService {
         }
     }
 
-    async findAllCategory(page: number = 1, size: number = 10): Promise<{ rows: Categories[]; count: number }> {
-        const limit = size;
+    async findAllCategory(page: number = 1, size: number = 10) {
         const offset = (page - 1) * size;
-        return await CategoryRepository.findAllCategory(limit, offset);
+        return await CategoryRepository.findAllCategory(size, offset);
     }
 
     async findByIdCategory(categoryId: number): Promise<Categories> {

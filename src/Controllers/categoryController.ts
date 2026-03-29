@@ -1,4 +1,4 @@
-import {type Request, type Response, type NextFunction } from "express";
+import { type Request, type Response, type NextFunction } from "express";
 import CategoryService from "../Service/CategoryService.js";
 import Categories from "../Models/Categories.js";
 import { ApiException } from "../Exception/ApiException.js";
@@ -7,21 +7,21 @@ class CategoryController {
 
     static async findAllCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { page, size } = req.query;
-            const pageNumber: number = Number(page) || 1;
-            const sizeNumber: number = Number(size) || 10;
+            const page = Number(req.query.page) || 1;
+            const size = Number(req.query.size) || 6;
 
-            const result = await CategoryService.findAllCategory(pageNumber, sizeNumber);
+            const result = await CategoryService.findAllCategory(page, size);
             res.status(200).json({
                 totalItems: result.count,
-                totalPages: Math.ceil(result.count / sizeNumber),
-                currentPage: pageNumber,
+                totalPages: Math.ceil(result.count / size),
+                currentPage: page,
                 data: result.rows
             });
         } catch (error) {
             next(error);
         }
     }
+
 
     static async findByIdCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {

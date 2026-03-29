@@ -57,10 +57,9 @@ class OrderService {
         }
     }
 
-    static async findAllOrders(page: number, size: number) {
-        const limit = size;
+    static async findAllOrders(page: number = 1, size: number = 6) {
         const offset = (page - 1) * size;
-        return await OrderRepository.findAllOrders(limit, offset);
+        return await OrderRepository.findAllOrders(size, offset);
     }
 
     static async findByIdOrder(id_orders: number) {

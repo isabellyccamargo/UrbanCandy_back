@@ -4,21 +4,21 @@ import { ApiException } from "../Exception/ApiException.js";
 
 class AddressController {
 
-    static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static async createAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const address = await AddressService.create(req.body);
+            const address = await AddressService.createAddress(req.body);
             res.status(201).json(address);
         } catch (error) {
             next(error);
         }
     }
 
-    static async findAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static async findAllAddresses(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { page, size } = req.query;
-            const result = await AddressService.findAll(
+            const result = await AddressService.findAllAddresses(
                 Number(page) || 1,
-                Number(size) || 10
+                Number(size) || 6
             );
             res.status(200).json(result);
         } catch (error) {
@@ -26,7 +26,7 @@ class AddressController {
         }
     }
 
-    static async findById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static async findByIdAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_address } = req.params;
             if (!id_address || Array.isArray(id_address)) {
@@ -38,7 +38,7 @@ class AddressController {
                 throw new ApiException("INVALID_ID", 400, id_address);
             }
 
-            const address = await AddressService.findById(id);
+            const address = await AddressService.findByIdAddress(id);
             if (!address) {
                 throw new ApiException("ADDRESS_NOT_FOUND", 404, id);
             }
@@ -71,7 +71,7 @@ class AddressController {
         }
     }
 
-    static async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static async deleteAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_address } = req.params;
             if (!id_address || Array.isArray(id_address)) {
@@ -83,7 +83,7 @@ class AddressController {
                 throw new ApiException("INVALID_ID", 400, id_address);
             }
 
-            await AddressService.delete(id);
+            await AddressService.deleteAddress(id);
 
             res.status(204).send();
         } catch (error) {

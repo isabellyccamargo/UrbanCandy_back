@@ -14,7 +14,8 @@ Orders.init(
         id_orders: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
-            primaryKey: true
+            primaryKey: true,
+            field: 'id_orders'
         },
         id_people: {
             type: DataTypes.INTEGER.UNSIGNED,
@@ -22,7 +23,7 @@ Orders.init(
         },
         order_date: {
             type: DataTypes.DATE,
-            allowNull: false,
+            allowNull: true,
             defaultValue: DataTypes.NOW
         },
         total: {
@@ -31,7 +32,11 @@ Orders.init(
         },
         id_payment: {
             type: DataTypes.INTEGER.UNSIGNED,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'type_of_payment',
+                key: 'id_payment'
+            }
         }
     }, {
     sequelize,
