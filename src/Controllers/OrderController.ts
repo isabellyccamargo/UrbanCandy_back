@@ -41,18 +41,20 @@ class OrderController {
             next(error);
         }
     }
-
     static async findAllOrders(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            // Pega o size da query ou usa 5 para bater com o front
-            const page = Number(req.query.page) || 1;
-            const size = Number(req.query.size) || 5;
+            // Se não vier 'page', assume 1
+            const page = req.query.page ? Number(req.query.page) : 1;
+
+            // Se vier 'size', usa o número (inclusive 0). Se não vier, assume 6.
+            const size = req.query.size !== undefined ? Number(req.query.size) : 6;
 
             const result = await OrderService.findAllOrders(page, size);
 
             res.status(200).json({
                 totalItems: result.count,
-                totalPages: Math.ceil(result.count / size),
+                // Proteção contra divisão por zero para o cálculo de páginas
+                totalPages: size > 0 ? Math.ceil(result.count / size) : 1,
                 currentPage: page,
                 data: result.rows
             });
@@ -60,7 +62,6 @@ class OrderController {
             next(error);
         }
     }
-
     static async findByIdOrder(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
 

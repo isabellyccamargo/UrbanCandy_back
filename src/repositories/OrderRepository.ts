@@ -3,8 +3,9 @@ import People from "../Models/People.js";
 import OrderItem from "../Models/OrderItem.js";
 import Products from "../Models/Products.js";
 import sequelize from "../Config/Config.js";
-import { Transaction } from "sequelize";
+import { Transaction, type FindAndCountOptions } from "sequelize";
 import TypeOfPayment from "../Models/TypeOfPayment.js";
+
 
 interface ICartItem {
     id_product: number;
@@ -63,11 +64,10 @@ class OrderRepository {
     }
 
     async findAllOrders(limit: number, offset: number): Promise<{ rows: Orders[]; count: number }> {
-        return await Orders.findAndCountAll({
-            limit: Number(limit),
-            offset: Number(offset),
-            distinct: true,        
-            col: 'id_orders',        
+        // Usamos FindAndCountOptions para que o 'distinct' e o 'col' sejam aceitos
+        const options: FindAndCountOptions = {
+            distinct: true,
+            col: 'id_orders',
             include: [
                 {
                     model: People,
@@ -92,7 +92,15 @@ class OrderRepository {
                 }
             ],
             order: [["id_orders", "DESC"]]
-        });
+        };
+
+        // Lógica para o Dashboard: se limit for 0, não paginamos
+        if (limit > 0) {
+            options.limit = limit;
+            options.offset = offset;
+        }
+
+        return await Orders.findAndCountAll(options);
     }
 
     async findByIdOrder(id_orders: number): Promise<Orders | null> {
