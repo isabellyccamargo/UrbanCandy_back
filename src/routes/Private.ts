@@ -8,7 +8,6 @@ import OrderController from "../Controllers/OrderController.js";
 import AddressController from "../Controllers/AddressController.js";
 import TypeOfPaymentController from "../Controllers/TypeOfPaymentController.js";
 import multer from 'multer';
-import routes from "./Public.js";
 
 const privateRoutes = Router();
 
