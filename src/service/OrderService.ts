@@ -62,8 +62,9 @@ class OrderService {
         return await OrderRepository.findAllOrders(size, offset);
     }
 
-    static async findByIdOrder(id_orders: number) {
-        return await OrderRepository.findByIdOrder(id_orders);
+    static async findByUserId(id_people: number, page: number = 1, size: number = 6) {
+        const offset = (page - 1) * size;
+        return await OrderRepository.findByUserId(id_people, size, offset);
     }
 }
 

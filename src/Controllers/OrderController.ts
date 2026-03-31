@@ -62,29 +62,21 @@ class OrderController {
             next(error);
         }
     }
-    static async findByIdOrder(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+    static async findByUserId(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            const { id_people } = req.params; // Pegando o ID do usuário da URL
+            const page = req.query.page ? Number(req.query.page) : 1;
+            const size = req.query.size ? Number(req.query.size) : 6;
 
-            const { id_orders } = req.params;
+            const result = await OrderService.findByUserId(Number(id_people), page, size);
 
-            if (!id_orders || Array.isArray(id_orders)) {
-                throw new ApiException("INVALID_ID", 400, "id_orders");
-            }
-
-            const id: number = Number(id_orders);
-
-            if (Number.isNaN(id)) {
-                throw new ApiException("INVALID_ID", 400, id_orders);
-            }
-
-            const order = await OrderService.findByIdOrder(id);
-
-            if (!order) {
-                throw new ApiException("ORDER_NOT_FOUND", 404, id);
-            }
-
-            res.status(200).json(order);
-
+            res.status(200).json({
+                totalItems: result.count,
+                totalPages: Math.ceil(result.count / size),
+                currentPage: page,
+                data: result.rows
+            });
         } catch (error) {
             next(error);
         }

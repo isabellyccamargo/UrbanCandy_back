@@ -42,7 +42,7 @@ privateRoutes.put("/endereco/atualizar/:id_address", AddressController.updateAdd
 // --- PEDIDOS  ---
 privateRoutes.post("/pedido/checkout", OrderController.store);
 privateRoutes.get("/pedido/listar", OrderController.findAllOrders);
-privateRoutes.get("/pedido/listarPorId/:id_orders", OrderController.findByIdOrder);
+privateRoutes.get("/pedido/usuario/:id_people", OrderController.findByUserId);
 
 // --- TIPOS DE PAGAMENTO ---
 privateRoutes.post("/pagamento/salvar", TypeOfPaymentController.createTypeOfPayment);

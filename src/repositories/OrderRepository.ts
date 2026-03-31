@@ -103,10 +103,33 @@ class OrderRepository {
         return await Orders.findAndCountAll(options);
     }
 
-    async findByIdOrder(id_orders: number): Promise<Orders | null> {
-        return await Orders.findByPk(id_orders, {
-            include: [{ model: OrderItem, as: "items", include: [{ model: Products, as: "products" }] }]
-        });
+    async findByUserId(id_people: number, limit: number, offset: number): Promise<{ rows: Orders[]; count: number }> {
+        const options: FindAndCountOptions = {
+            // Mude de id_user para id_people (ou o nome exato da sua coluna na tabela Orders)
+            where: { id_people: id_people },
+            distinct: true,
+            col: 'id_orders',
+            include: [
+                {
+                    model: TypeOfPayment,
+                    as: "paymentType",
+                    attributes: ["name_payment"]
+                },
+                {
+                    model: OrderItem,
+                    as: "items",
+                    include: [{ model: Products, as: "products" }]
+                }
+            ],
+            order: [["id_orders", "DESC"]]
+        };
+
+        if (limit > 0) {
+            options.limit = limit;
+            options.offset = offset;
+        }
+
+        return await Orders.findAndCountAll(options);
     }
 
     async findOpenOrderByPeople(id_people: number): Promise<Orders | null> {
