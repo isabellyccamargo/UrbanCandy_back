@@ -1,5 +1,6 @@
 import { ApiException } from "../Exception/ApiException.js";
 import OrderRepository from "../Repositories/OrderRepository.js";
+import { type IOrderCheckout } from "../@types/OrdersTypes.js";
 
 interface ICartItem {
     id_product: number;
@@ -18,34 +19,16 @@ interface ICart {
 
 
 class OrderService {
-    static async checkout(id_people: number, cart: ICart, id_payment: number): Promise<any> {
-
+    static async checkout(id_people: number, cart: ICart, id_payment: number) {
         this.validateCheckoutData(id_people, cart, id_payment);
-
-        return await OrderRepository.createFullOrder(
-            id_people,
-            cart.items,
-            cart.total,
-            id_payment
-        );
+        return await OrderRepository.createFullOrder(id_people, cart.items, cart.total, id_payment);
     }
 
     private static validateCheckoutData(id_people: number, cart: ICart, id_payment: number): void {
-        if (!id_people || id_people <= 0) {
-            throw new ApiException("USER_NOT_FOUND", 401, "Usuário não identificado para o pedido.");
-        }
-
-        if (!cart?.items?.length) {
-            throw new ApiException("CART_EMPTY", 400, "O carrinho enviado está vazio.");
-        }
-
-        if (cart.total <= 0) {
-            throw new ApiException("INVALID_TOTAL", 400, "O valor total do pedido é inválido.");
-        }
-
-        if (!id_payment || id_payment <= 0) {
-            throw new ApiException("PAYMENT_REQUIRED", 400, "O método de pagamento deve ser informado.");
-        }
+        if (!id_people || id_people <= 0) throw new ApiException("USER_NOT_FOUND", 401, "Usuário inválido.");
+        if (!cart?.items?.length) throw new ApiException("CART_EMPTY", 400, "Carrinho vazio.");
+        if (cart.total <= 0) throw new ApiException("INVALID_TOTAL", 400, "Total inválido.");
+        if (!id_payment || id_payment <= 0) throw new ApiException("PAYMENT_REQUIRED", 400, "Método de pagamento obrigatório.");
     }
 
     private static validateCart(cart: ICart): void {
