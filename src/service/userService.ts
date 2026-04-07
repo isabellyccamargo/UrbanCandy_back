@@ -61,7 +61,7 @@ class UserService {
                 administrator: user.administrator
             },
             process.env.JWT_SECRET! as string,
-            { expiresIn: "10h" }
+            { expiresIn: "2h" }
         );
 
         return {

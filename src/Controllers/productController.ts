@@ -98,8 +98,6 @@ class ProductController {
                 dados.image = req.file.filename;
             }
 
-            // CONVERSÃO DE TIPO:
-            // Garante que o valor que vai para o banco seja boolean (true/false) e não string "true"
             if (dados.featured !== undefined) {
                 dados.featured = String(dados.featured) === 'true';
             }
