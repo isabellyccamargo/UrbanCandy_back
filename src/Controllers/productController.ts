@@ -45,7 +45,7 @@ class ProductController {
             next(error);
         }
     };
-    
+
     static findFeaturedProducts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const page = Number(req.query.page) || 1;
@@ -77,6 +77,13 @@ class ProductController {
         try {
             const dados = req.body;
             if (req.file) dados.image = req.file.filename;
+
+            // CONVERSÃO DE TIPO:
+            // O FormData envia tudo como string. Precisamos converter para boolean.
+            if (dados.featured !== undefined) {
+                dados.featured = String(dados.featured) === 'true';
+            }
+
             const newProduct = await ProductService.createProduct(Products.build(dados));
             res.status(201).json(newProduct);
         } catch (error) { next(error); }
@@ -85,12 +92,23 @@ class ProductController {
     static updateProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = this.parseId(req);
-            const instance = Products.build({ id_product: id, ...req.body });
+            const dados = req.body;
+
+            if (req.file) {
+                dados.image = req.file.filename;
+            }
+
+            // CONVERSÃO DE TIPO:
+            // Garante que o valor que vai para o banco seja boolean (true/false) e não string "true"
+            if (dados.featured !== undefined) {
+                dados.featured = String(dados.featured) === 'true';
+            }
+
+            const instance = Products.build({ id_product: id, ...dados });
             await ProductService.updateProduct(instance);
             res.status(200).json({ message: "Produto atualizado com sucesso" });
         } catch (error) { next(error); }
     };
-
     static deleteProduct = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const id = this.parseId(req);
