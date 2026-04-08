@@ -31,12 +31,17 @@ interface IUserRegistration {
 class UserService {
     // FUNÇÃO AUXILIARES
     private validateEmail(email: string) {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!regex.test(email)) throw new ApiException("INVALID_EMAIL", 400);
+        const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com)$/;
+        if (!regex.test(email)) {
+            throw new ApiException("INVALID_EMAIL", 400);
+        }
     }
 
     private validateCPF(cpf: string) {
-        if (!cpf || cpf.length !== 11) throw new ApiException("INVALID_CPF", 400);
+        const cleanCPF = cpf.replace(/\D/g, '');
+        if (cleanCPF.length !== 11) {
+            throw new ApiException("INVALID_CPF", 400);
+        }
     }
 
     private validatePasswordLevel(password: string) {
@@ -90,12 +95,12 @@ class UserService {
 
         const userExists = await UserRepository.findByEmail(allData.email);
         if (userExists) {
-            throw new ApiException("EMAIL_ALREADY_EXISTS", 409);
+            throw new ApiException("EMAIL_ALREADY_EXISTS", 409, allData.email);
         }
 
-        const cpfExists = await UserRepository.findByCpf(allData.cpf);
+        const cpfExists = await UserRepository.findByCpf(allData.cpf.replace(/\D/g, ''));
         if (cpfExists) {
-            throw new ApiException("CPF_ALREADY_EXISTS", 409);
+            throw new ApiException("CPF_ALREADY_EXISTS", 409, allData.cpf);
         }
 
         const salt = await bcrypt.genSalt(10);
