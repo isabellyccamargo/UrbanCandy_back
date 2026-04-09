@@ -29,7 +29,6 @@ interface IUserRegistration {
 }
 
 class UserService {
-    // FUNÇÃO AUXILIARES
     private validateEmail(email: string) {
         const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com)$/;
         if (!regex.test(email)) {
@@ -80,7 +79,6 @@ class UserService {
         };
     }
 
-    // CRUD PRINCIPAL
     async findAllUsers(page: number = 1, size: number = 10) {
         const limit = size;
         const offset = (page - 1) * size;

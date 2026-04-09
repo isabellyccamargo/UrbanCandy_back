@@ -14,10 +14,8 @@ describe("Order", () => {
         
         try {
             await OrderService.checkout(0, cart, "pix");
-            // Se não lançar erro, força a falha do teste
             throw new Error("Deveria ter lançado um erro");
         } catch (error: any) {
-            // AJUSTADO: Agora verifica o código técnico retornado
             expect(error.message).toContain("USER_NOT_FOUND");
         }
     });

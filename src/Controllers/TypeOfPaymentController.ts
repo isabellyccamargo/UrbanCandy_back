@@ -20,11 +20,9 @@ class TypeOfPaymentController {
         }
     }
 
-
     static async findByIdTypeOfPayment(req: Request, res: Response, next: NextFunction): Promise<void> {
 
         try {
-
             const { id_payment } = req.params;
 
             if (!id_payment || Array.isArray(id_payment)) {

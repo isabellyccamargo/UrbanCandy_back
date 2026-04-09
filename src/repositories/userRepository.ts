@@ -13,18 +13,18 @@ class UserRepository {
     }
 
     async findByIdUser(id_user: number) {
-    return await Users.findByPk(id_user, {
-        attributes: { exclude: ['password'] },
-        include: [{
-            model: People,
-            as: 'people',
-            include: [{ 
-                model: Address,
-                as: 'address'
+        return await Users.findByPk(id_user, {
+            attributes: { exclude: ['password'] },
+            include: [{
+                model: People,
+                as: 'people',
+                include: [{
+                    model: Address,
+                    as: 'address'
+                }]
             }]
-        }]
-    });
-}
+        });
+    }
 
     async findByEmail(email: string) {
         return await Users.findOne({

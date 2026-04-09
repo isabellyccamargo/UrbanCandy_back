@@ -4,7 +4,6 @@ import ProductController from "../Controllers/ProductController.js";
 import CategoryController from "../Controllers/CategoryController.js";
 import UserController from "../Controllers/UserController.js";
 import privateRoutes from "./Private.js"; 
-
 const routes = Router();
 
 // --- LOGIN E CADASTRO ---

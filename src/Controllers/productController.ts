@@ -78,8 +78,6 @@ class ProductController {
             const dados = req.body;
             if (req.file) dados.image = req.file.filename;
 
-            // CONVERSÃO DE TIPO:
-            // O FormData envia tudo como string. Precisamos converter para boolean.
             if (dados.featured !== undefined) {
                 dados.featured = String(dados.featured) === 'true';
             }

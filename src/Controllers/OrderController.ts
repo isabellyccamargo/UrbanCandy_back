@@ -1,22 +1,16 @@
 import { type Request, type Response, type NextFunction } from "express";
 import OrderService from "../Service/OrderService.js";
 import { ApiException } from "../Exception/ApiException.js";
-// IMPORTANTE: Importe as interfaces globais aqui
 import { type ICart, type IOrderCheckout } from "../@types/OrdersTypes.js";
 
 class OrderController {
-    /**
-     * Validação interna simples
-     */
+
     private static validateRequest(id_people: number, cart: ICart): void {
         if (!id_people || !cart || !cart.items) {
             throw new ApiException("DATA_INCOMPLETE", 400, "Dados insuficientes para processar o pedido.");
         }
     }
 
-    /**
-     * Método Store (Checkout)
-     */
     static async store(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const body = req.body as IOrderCheckout;
@@ -38,9 +32,6 @@ class OrderController {
         }
     }
 
-    /**
-     * Método para buscar pedidos de um usuário específico
-     */
     static async findByUserId(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_people } = req.params; 
@@ -60,9 +51,6 @@ class OrderController {
         }
     }
 
-    /**
-     * Listar todos os pedidos (Dashboard)
-     */
     static async findAllOrders(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const page = req.query.page ? Number(req.query.page) : 1;

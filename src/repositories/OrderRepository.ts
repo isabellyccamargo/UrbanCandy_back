@@ -11,7 +11,6 @@ class OrderRepository {
 
     private async _createItems(id_order: number, items: ICartItem[], t: Transaction): Promise<void> {
         const formatted = items.map(item => {
-            // CORREÇÃO: Usando Number() para evitar erro de conversão direta string/number
             const price = item.products?.price ? Number(item.products.price) : 0;
             const quantity = item.quantity || 1;
             const subTotal = item.sub_total ? Number(item.sub_total) : (price * quantity);
@@ -75,7 +74,6 @@ class OrderRepository {
                     ]
                 }
             ],
-            // CORREÇÃO: Usando o alias SequelizeOrder importado no topo
             order: [["id_orders", "DESC"]] as SequelizeOrder
         };
 

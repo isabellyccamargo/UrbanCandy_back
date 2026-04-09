@@ -11,7 +11,6 @@ describe("People", () => {
             cpf: "11122233344" 
         } as any);
 
-        // AJUSTADO: Esperando o código que o Service realmente envia
         await expect(PeopleService.updatePeople(1, dadosNovos))
             .rejects.toThrow("CPF_CHANGE_NOT_ALLOWED"); 
     });

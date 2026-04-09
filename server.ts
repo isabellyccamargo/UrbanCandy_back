@@ -1,7 +1,7 @@
 import express, { type Application } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import cors from "cors"; // 1. Importe o CORS aqui
+import cors from "cors"; 
 import publico from "./src/Routes/Public.js";
 import { dataBaseConectionn } from "./src/Config/Config.js";
 import { setupAssociations } from "./src/Models/Associations.js";
