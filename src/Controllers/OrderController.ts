@@ -21,7 +21,7 @@ class OrderController {
             const finalPaymentId = id_payment || 0;
             
 
-            const result = await OrderService.checkout(id_people, cart as any, finalPaymentId);
+            const result = await OrderService.checkout(id_people, cart, finalPaymentId);
 
             res.status(201).json({
                 message: "Pedido realizado com sucesso!",

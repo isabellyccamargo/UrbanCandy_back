@@ -1,21 +1,6 @@
 import { ApiException } from "../Exception/ApiException.js";
 import OrderRepository from "../Repositories/OrderRepository.js";
-import { type IOrderCheckout } from "../@types/OrdersTypes.js";
-
-interface ICartItem {
-    id_product: number;
-    quantity: number;
-    sub_total: number;
-    products: {
-        price: number;
-        name: string;
-    };
-}
-
-interface ICart {
-    items: ICartItem[];
-    total: number;
-}
+import { type ICart } from "../@types/OrdersTypes.js";
 
 
 class OrderService {

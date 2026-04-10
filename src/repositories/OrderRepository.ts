@@ -40,9 +40,9 @@ class OrderRepository {
 
             await t.commit();
             return order;
-        } catch (error: any) {
+        } catch (error) {
             await t.rollback();
-            console.error("ERRO REPOSITORY (createFullOrder):", error.message);
+            console.error("ERRO REPOSITORY (createFullOrder):");
             throw error;
         }
     }
