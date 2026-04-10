@@ -9,6 +9,15 @@ type TokenPayload = {
     administrator: string;
 }
 
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: number;
+      userAdmin?: string;
+    }
+  }
+}
+
 async function authMiddleware(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
 
@@ -33,7 +42,7 @@ async function authMiddleware(req: Request, res: Response, next: NextFunction) {
         const user = await UserRepository.findByIdUser(decoded.id);
 
         if (user) {
-            (req as any).userId = decoded.id;
+            (req ).userId = decoded.id;
             return next();
         }
 
