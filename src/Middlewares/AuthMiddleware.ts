@@ -6,25 +6,25 @@ import 'dotenv/config';
 type TokenPayload = {
     id: number;
     email: string;
-    administrator: string;
 }
 
 declare global {
   namespace Express {
     interface Request {
       userId?: number;
-      userAdmin?: string;
     }
   }
 }
 
 async function authMiddleware(req: Request, res: Response, next: NextFunction) {
+    //É aqui que o seu Front-end enviou o token. 
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
         return res.status(403).json({ message: "Acesso não permitido" });
     }
 
+    //Quebra o bearer e pega só o token
     const token = authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : authHeader;
 
     const secret = process.env.JWT_SECRET;
@@ -37,10 +37,12 @@ async function authMiddleware(req: Request, res: Response, next: NextFunction) {
     }
 
     try {
+        //Verifica se o token nao foi modificado ou expirado
         const decoded = jwt.verify(token, secret) as unknown as TokenPayload;
 
         const user = await UserRepository.findByIdUser(decoded.id);
 
+        //Se for válido, o id é salvo no req para que as rotas saibam quem esta logando.
         if (user) {
             (req ).userId = decoded.id;
             return next();

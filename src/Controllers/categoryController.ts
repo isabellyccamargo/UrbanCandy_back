@@ -22,7 +22,6 @@ class CategoryController {
         }
     }
 
-
     static async findByIdCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id_category } = req.params;

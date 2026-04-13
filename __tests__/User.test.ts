@@ -14,7 +14,7 @@ describe("UserService", () => {
         test("deve lançar erro para e-mail com formato inválido", async () => {
             const dados: any = { email: "email-errado", cpf: "12345678901", password: "Senha123" };
             await expect(UserService.createUser(dados))
-                .rejects.toThrow("O e-mail deve ser @gmail.com ou @icloud.com."); 
+                .rejects.toThrow("O e-mail deve conter @ e terminar com .com."); 
         });
 
         test("deve lançar erro se a senha não tiver letras e números ou for curta", async () => {

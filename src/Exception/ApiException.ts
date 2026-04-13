@@ -1,4 +1,5 @@
-// Essa classe representa um erro da API.
+// Recebe todos os erros que podem acontecer na API, e a partir do código do erro, ele busca a mensagem correspondente no arquivo 
+// de mensagens de erro, e formata a mensagem com os parâmetros fornecidos.
 
 import { getErrorMessage } from "../Utils/ErrorMessages.js";
 

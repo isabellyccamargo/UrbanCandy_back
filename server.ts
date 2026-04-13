@@ -1,10 +1,11 @@
 import express, { type Application } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import cors from "cors"; 
+import cors from "cors";
 import publico from "./src/Routes/Public.js";
 import { dataBaseConectionn } from "./src/Config/Config.js";
 import { setupAssociations } from "./src/Models/Associations.js";
+import { errorHandler } from "./src/Middlewares/ErrorHandler.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,7 +21,7 @@ server.use(cors({
 }));
 
 dataBaseConectionn();
-setupAssociations(); 
+setupAssociations();
 
 server.use(express.json());
 
@@ -29,6 +30,9 @@ server.use(express.json());
 
 server.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 server.use(publico);
+
+// Middleware de tratamento de erros - DEVE ser o último middleware
+server.use(errorHandler);
 
 server.listen(3030, () => {
     console.log("Servidor TypeScript rodando na porta 3030");

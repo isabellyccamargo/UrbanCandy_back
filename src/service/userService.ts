@@ -30,7 +30,8 @@ interface IUserRegistration {
 
 class UserService {
     private validateEmail(email: string) {
-        const regex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com)$/;
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/;
+
         if (!regex.test(email)) {
             throw new ApiException("INVALID_EMAIL", 400);
         }
@@ -61,8 +62,7 @@ class UserService {
         const token = jwt.sign(
             {
                 id: user.id_user,
-                email: user.email,
-                administrator: user.administrator
+                email: user.email
             },
             process.env.JWT_SECRET! as string,
             { expiresIn: "2h" }
@@ -70,11 +70,11 @@ class UserService {
 
         return {
             message: 'Usuário autenticado',
+            //Envia a string longa e criptografada que o Front-end deve guardar, no LocalStorage
             token,
             user: {
                 id_user: user.id_user,
-                nome: user.people?.name || "Usuário",
-                administrator: user.administrator
+                nome: user.people?.name || "Usuário"
             }
         };
     }
