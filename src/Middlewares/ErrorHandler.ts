@@ -1,8 +1,8 @@
 // Aqui ele vai capturar qualquer erro de API e retornar uma resposta padronizada para o cliente.
 
 import { type Request, type Response, type NextFunction } from "express";
-import { ApiException } from "../Exception/ApiException.js";
-import type { ErrorResponse } from "../Dto/ErrorResponse.js";
+import { ApiException } from "../exception/ApiException.js";
+import type { ErrorResponse } from "../dto/ErrorResponse.js";
 
 
 export function errorHandler(

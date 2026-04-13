@@ -1,11 +1,11 @@
 import { error } from "node:console";
-import CategoryRepository from "../Repositories/CategoryRepository.js";
+import CategoryRepository from "../repositories/CategoryRepository.js";
 import { deflate } from "node:zlib";
-import Categories from "../Models/Categories.js"
-import { ApiException } from "../Exception/ApiException.js";
+import Categories from "../models/Categories.js"
+import { ApiException } from "../exception/ApiException.js";
 
 class CategoryService {
-    
+
     private validateName(category: Categories): void {
         if (!category.name_category || category.name_category.trim() === "") {
             throw new ApiException("INVALID_CATEGORY_NAME", 400);

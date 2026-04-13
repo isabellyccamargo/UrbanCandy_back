@@ -1,8 +1,8 @@
-import Address from "../Models/Address.js";
+import Address from "../models/Address.js";
 
 class AddressRepository {
     async createAddress(address: Address): Promise<Address> {
-        return await Address.create(); 
+        return await Address.create();
     }
 
     async findAllAddresses(limit: number, offset: number): Promise<{ rows: Address[]; count: number }> {

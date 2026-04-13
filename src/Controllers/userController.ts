@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from "express";
-import UserService from "../Service/UserService.js";
-import { ApiException } from "../Exception/ApiException.js";
+import UserService from "../service/UserService.js";
+import { ApiException } from "../exception/ApiException.js";
 
 class UserController {
 
@@ -12,7 +12,7 @@ class UserController {
             }
             const result = await UserService.login(email, password);
             res.status(200).json(result);
-            
+
         } catch (error) {
             next(error);
         }

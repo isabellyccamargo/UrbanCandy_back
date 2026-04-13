@@ -1,4 +1,4 @@
-import TypeOfPayment from "../Models/TypeOfPayment.js";
+import TypeOfPayment from "../models/TypeOfPayment.js";
 
 class TypeOfPaymentRepository {
 

@@ -1,5 +1,5 @@
-import Products from "../Models/Products.js";
-import Categories from "../Models/Categories.js";
+import Products from "../models/Products.js";
+import Categories from "../models/Categories.js";
 
 interface ProductQueryResult {
     rows: Products[];
@@ -9,13 +9,13 @@ interface ProductQueryResult {
 class ProductRepository {
 
     async findAllProduct(limit: number, offset: number) {
-    return await Products.findAndCountAll({
-        limit: limit,   
-        offset: offset,
-        include: [{ all: true }],
-        order: [['id_product', 'ASC']]
-    });
-}
+        return await Products.findAndCountAll({
+            limit: limit,
+            offset: offset,
+            include: [{ all: true }],
+            order: [['id_product', 'ASC']]
+        });
+    }
 
     async findFeaturedProducts(limit: number, offset: number): Promise<ProductQueryResult> {
         return await Products.findAndCountAll({

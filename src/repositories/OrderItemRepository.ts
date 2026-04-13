@@ -1,5 +1,5 @@
-import OrderItem from "../Models/OrderItem.js";
-import Products from "../Models/Products.js";
+import OrderItem from "../models/OrderItem.js";
+import Products from "../models/Products.js";
 
 class OrderItemRepository {
 

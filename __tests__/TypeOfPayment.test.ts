@@ -1,6 +1,6 @@
 import { jest, describe, test, expect, beforeEach } from '@jest/globals';
-import TypeOfPaymentService from "../src/Service/TypeOfPaymentService.js";
-import TypeOfPaymentRepository from "../src/Repositories/TypeOfPaymentRepository.js";
+import TypeOfPaymentService from "../src/service/TypeOfPaymentService.js";
+import TypeOfPaymentRepository from "../src/repositories/TypeOfPaymentRepository.js";
 
 describe("TypeOfPaymentService", () => {
     beforeEach(() => {

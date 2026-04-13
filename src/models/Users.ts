@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../Config/Config.js";
+import sequelize from "../config/Config.js";
 
 class Users extends Model {
     declare id_user: number;

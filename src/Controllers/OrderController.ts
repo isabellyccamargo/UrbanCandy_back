@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from "express";
-import OrderService from "../Service/OrderService.js";
-import { ApiException } from "../Exception/ApiException.js";
+import OrderService from "../service/OrderService.js";
+import { ApiException } from "../exception/ApiException.js";
 import { type ICart, type IOrderCheckout } from "../@types/OrdersTypes.js";
 
 class OrderController {
@@ -19,7 +19,7 @@ class OrderController {
             OrderController.validateRequest(id_people, cart);
 
             const finalPaymentId = id_payment || 0;
-            
+
 
             const result = await OrderService.checkout(id_people, cart, finalPaymentId);
 
@@ -34,7 +34,7 @@ class OrderController {
 
     static async findByUserId(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { id_people } = req.params; 
+            const { id_people } = req.params;
             const page = req.query.page ? Number(req.query.page) : 1;
             const size = req.query.size ? Number(req.query.size) : 6;
 

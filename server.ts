@@ -2,10 +2,10 @@ import express, { type Application } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
-import publico from "./src/Routes/Public.js";
-import { dataBaseConectionn } from "./src/Config/Config.js";
-import { setupAssociations } from "./src/Models/Associations.js";
-import { errorHandler } from "./src/Middlewares/ErrorHandler.js";
+import publico from "./src/routes/Public.js";
+import { dataBaseConectionn } from "./src/config/Config.js";
+import { setupAssociations } from "./src/models/Associations.js";
+import { errorHandler } from "./src/middlewares/ErrorHandler.js";
 
 
 const __filename = fileURLToPath(import.meta.url);

@@ -1,6 +1,6 @@
-import Users from "../Models/Users.js";
-import People from "../Models/People.js";
-import Address from "../Models/Address.js";
+import Users from "../models/Users.js";
+import People from "../models/People.js";
+import Address from "../models/Address.js";
 
 class UserRepository {
     async findAllUsers(limit: number, offset: number) {

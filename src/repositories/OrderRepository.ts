@@ -1,10 +1,10 @@
-import Orders from "../Models/Orders.js";
-import People from "../Models/People.js";
-import OrderItem from "../Models/OrderItem.js";
-import Products from "../Models/Products.js";
-import sequelize from "../Config/Config.js";
-import {type Order as SequelizeOrder, Transaction, type FindAndCountOptions } from "sequelize";
-import TypeOfPayment from "../Models/TypeOfPayment.js";
+import Orders from "../models/Orders.js";
+import People from "../models/People.js";
+import OrderItem from "../models/OrderItem.js";
+import Products from "../models/Products.js";
+import sequelize from "../config/Config.js";
+import { type Order as SequelizeOrder, Transaction, type FindAndCountOptions } from "sequelize";
+import TypeOfPayment from "../models/TypeOfPayment.js";
 import { type ICartItem, type IPaginatedResponse } from "../@types/OrdersTypes.js";
 
 class OrderRepository {
@@ -91,15 +91,15 @@ class OrderRepository {
             distinct: true,
             col: 'id_orders',
             include: [
-                { 
-                    model: TypeOfPayment, 
-                    as: "paymentType", 
-                    attributes: ["name_payment"] 
+                {
+                    model: TypeOfPayment,
+                    as: "paymentType",
+                    attributes: ["name_payment"]
                 },
-                { 
-                    model: OrderItem, 
-                    as: "items", 
-                    include: [{ model: Products, as: "products" }] 
+                {
+                    model: OrderItem,
+                    as: "items",
+                    include: [{ model: Products, as: "products" }]
                 }
             ],
             order: [["id_orders", "DESC"]] as SequelizeOrder

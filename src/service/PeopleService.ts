@@ -1,6 +1,6 @@
-import PeopleRepository from "../Repositories/PeopleRepository.js";
-import People from "../Models/People.js";
-import { ApiException } from "../Exception/ApiException.js";
+import PeopleRepository from "../repositories/PeopleRepository.js";
+import People from "../models/People.js";
+import { ApiException } from "../exception/ApiException.js";
 
 class PeopleService {
     private validateCPF(cpf: string): void {

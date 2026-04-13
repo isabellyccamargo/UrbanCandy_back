@@ -1,6 +1,6 @@
-import type Address from "../Models/Address.js";
-import AddressRepository from "../Repositories/AddressRepository.js";
-import { ApiException } from "../Exception/ApiException.js";
+import type Address from "../models/Address.js";
+import AddressRepository from "../repositories/AddressRepository.js";
+import { ApiException } from "../exception/ApiException.js";
 
 class AddressService {
     async createAddress(data: Address): Promise<Address> {
@@ -17,7 +17,7 @@ class AddressService {
         const limit = size;
         const offset = (page - 1) * size;
         const result = await AddressRepository.findAllAddresses(limit, offset);
-        
+
         return {
             totalItems: result.count,
             totalPages: Math.ceil(result.count / size),

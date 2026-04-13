@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from "express";
-import PeopleService from "../Service/PeopleService.js";
-import People from "../Models/People.js";
-import { ApiException } from "../Exception/ApiException.js";
+import PeopleService from "../service/PeopleService.js";
+import People from "../models/People.js";
+import { ApiException } from "../exception/ApiException.js";
 
 class PeopleController {
 

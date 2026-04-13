@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from "express";
 import jwt from "jsonwebtoken";
-import UserRepository from "../Repositories/UserRepository.js";
+import UserRepository from "../repositories/UserRepository.js";
 import 'dotenv/config';
 
 type TokenPayload = {
@@ -9,11 +9,11 @@ type TokenPayload = {
 }
 
 declare global {
-  namespace Express {
-    interface Request {
-      userId?: number;
+    namespace Express {
+        interface Request {
+            userId?: number;
+        }
     }
-  }
 }
 
 async function authMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -44,7 +44,7 @@ async function authMiddleware(req: Request, res: Response, next: NextFunction) {
 
         //Se for válido, o id é salvo no req para que as rotas saibam quem esta logando.
         if (user) {
-            (req ).userId = decoded.id;
+            (req).userId = decoded.id;
             return next();
         }
 

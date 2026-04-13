@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from "express";
-import AddressService from "../Service/AddressService.js";
-import { ApiException } from "../Exception/ApiException.js";
+import AddressService from "../service/AddressService.js";
+import { ApiException } from "../exception/ApiException.js";
 
 class AddressController {
 

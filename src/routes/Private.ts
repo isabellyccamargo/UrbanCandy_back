@@ -1,12 +1,12 @@
 import { Router } from "express";
-import authMiddleware from "../Middlewares/AuthMiddleware.js";
-import ProductController from "../Controllers/ProductController.js";
-import CategoryController from "../Controllers/CategoryController.js";
-import UserController from "../Controllers/UserController.js";
-import PeopleController from "../Controllers/PeopleController.js";
-import OrderController from "../Controllers/OrderController.js";
-import AddressController from "../Controllers/AddressController.js";
-import TypeOfPaymentController from "../Controllers/TypeOfPaymentController.js";
+import authMiddleware from "../middlewares/AuthMiddleware.js";
+import ProductController from "../controllers/ProductController.js";
+import CategoryController from "../controllers/CategoryController.js";
+import UserController from "../controllers/UserController.js";
+import PeopleController from "../controllers/PeopleController.js";
+import OrderController from "../controllers/OrderController.js";
+import AddressController from "../controllers/AddressController.js";
+import TypeOfPaymentController from "../controllers/TypeOfPaymentController.js";
 import multer from 'multer';
 
 const privateRoutes = Router();

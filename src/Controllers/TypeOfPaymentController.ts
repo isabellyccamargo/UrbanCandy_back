@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from "express";
-import TypeOfPaymentService from "../Service/TypeOfPaymentService.js";
-import TypeOfPayment from "../Models/TypeOfPayment.js";
-import { ApiException } from "../Exception/ApiException.js";
+import TypeOfPaymentService from "../service/TypeOfPaymentService.js";
+import TypeOfPayment from "../models/TypeOfPayment.js";
+import { ApiException } from "../exception/ApiException.js";
 
 class TypeOfPaymentController {
 

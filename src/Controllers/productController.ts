@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from "express";
-import ProductService from "../Service/ProductService.js";
-import Products from "../Models/Products.js";
-import { ApiException } from "../Exception/ApiException.js";
+import ProductService from "../service/ProductService.js";
+import Products from "../models/Products.js";
+import { ApiException } from "../exception/ApiException.js";
 
 interface PaginatedResult {
     rows: Products[];

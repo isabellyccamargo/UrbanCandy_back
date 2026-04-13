@@ -1,9 +1,9 @@
-import UserRepository from "../Repositories/UserRepository.js";
-import Users from "../Models/Users.js";
-import People from "../Models/People.js";
+import UserRepository from "../repositories/UserRepository.js";
+import Users from "../models/Users.js";
+import People from "../models/People.js";
 import bcrypt from "bcrypt";
-import Address from "../Models/Address.js";
-import { ApiException } from "../Exception/ApiException.js";
+import Address from "../models/Address.js";
+import { ApiException } from "../exception/ApiException.js";
 import 'dotenv/config';
 import jwt from "jsonwebtoken";
 

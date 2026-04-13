@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from "express";
-import CategoryService from "../Service/CategoryService.js";
-import Categories from "../Models/Categories.js";
-import { ApiException } from "../Exception/ApiException.js";
+import CategoryService from "../service/CategoryService.js";
+import Categories from "../models/Categories.js";
+import { ApiException } from "../exception/ApiException.js";
 
 class CategoryController {
 

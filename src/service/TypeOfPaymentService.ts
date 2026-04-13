@@ -1,6 +1,6 @@
-import TypeOfPaymentRepository from "../Repositories/TypeOfPaymentRepository.js";
-import TypeOfPayment from "../Models/TypeOfPayment.js";
-import { ApiException } from "../Exception/ApiException.js";
+import TypeOfPaymentRepository from "../repositories/TypeOfPaymentRepository.js";
+import TypeOfPayment from "../models/TypeOfPayment.js";
+import { ApiException } from "../exception/ApiException.js";
 
 class TypeOfPaymentService {
 

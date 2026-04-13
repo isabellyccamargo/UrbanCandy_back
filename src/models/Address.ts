@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "../Config/Config.js";
+import sequelize from "../config/Config.js";
 
 class Address extends Model {
     declare id_address: number;

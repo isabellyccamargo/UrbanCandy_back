@@ -1,9 +1,9 @@
 // src/Routes/PublicRoutes.ts
 import { Router } from "express";
-import ProductController from "../Controllers/ProductController.js";
-import CategoryController from "../Controllers/CategoryController.js";
-import UserController from "../Controllers/UserController.js";
-import privateRoutes from "./Private.js"; 
+import ProductController from "../controllers/ProductController.js";
+import CategoryController from "../controllers/CategoryController.js";
+import UserController from "../controllers/UserController.js";
+import privateRoutes from "./Private.js";
 const routes = Router();
 
 // --- LOGIN E CADASTRO ---
@@ -20,6 +20,6 @@ routes.get("/produto/categoria/:categoryName", ProductController.findByCategory)
 routes.get("/categoria/listar", CategoryController.findAllCategory);
 routes.get("/categoria/listarPorId/:id_category", CategoryController.findByIdCategory);
 
-routes.use(privateRoutes); 
+routes.use(privateRoutes);
 
 export default routes;

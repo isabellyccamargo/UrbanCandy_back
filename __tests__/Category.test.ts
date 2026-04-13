@@ -1,6 +1,6 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals';
-import CategoryService from "../src/Service/CategoryService.js";
-import CategoryRepository from "../src/Repositories/CategoryRepository.js";
+import CategoryService from "../src/service/CategoryService.js";
+import CategoryRepository from "../src/repositories/CategoryRepository.js";
 
 describe("CategoryService", () => {
 
@@ -12,14 +12,14 @@ describe("CategoryService", () => {
     describe("Create", () => {
         it("deve lançar erro se o nome da categoria estiver vazio", async () => {
             const catInvalida: any = { name_category: "" };
-            
+
             await expect(CategoryService.createCategory(catInvalida))
                 .rejects.toThrow("INVALID_CATEGORY_NAME");
         });
 
         it("deve impedir a criação de categorias com nomes duplicados", async () => {
             const cat: any = { name_category: "Doces" };
-            
+
             jest.spyOn(CategoryRepository, 'findByName').mockResolvedValue({ id_category: 1, name_category: "Doces" } as any);
 
             await expect(CategoryService.createCategory(cat))
@@ -28,7 +28,7 @@ describe("CategoryService", () => {
 
         it("deve criar uma categoria com sucesso se o nome for novo", async () => {
             const cat: any = { name_category: "Bebidas" };
-            
+
             jest.spyOn(CategoryRepository, 'findByName').mockResolvedValue(null);
             const spyCreate = jest.spyOn(CategoryRepository, 'createCategory').mockResolvedValue({ id_category: 2, ...cat } as any);
 
@@ -53,12 +53,12 @@ describe("CategoryService", () => {
             await CategoryService.deleteCategory(1);
             expect(spyDel).toHaveBeenCalledWith(1);
         });
-    });                                                                                                                                                                                                                                                                                                                                                                                                 
+    });
 
     describe("Update", () => {
         it("deve permitir atualizar se o nome for alterado para um que não existe", async () => {
             const catUpdate: any = { name_category: "Nova Categoria" };
-            
+
             jest.spyOn(CategoryRepository, 'findByIdCategory').mockResolvedValue({ id_category: 1 } as any);
             jest.spyOn(CategoryRepository, 'findByName').mockResolvedValue(null);
             const spyUpdate = jest.spyOn(CategoryRepository, 'updateCategory').mockResolvedValue([1] as any);
@@ -69,11 +69,11 @@ describe("CategoryService", () => {
 
         it("não deve dar erro de nome duplicado se o nome pertencer à própria categoria que está sendo editada", async () => {
             const catMesmoNome: any = { name_category: "Doces" };
-            
+
             jest.spyOn(CategoryRepository, 'findByIdCategory').mockResolvedValue({ id_category: 1 } as any);
 
             jest.spyOn(CategoryRepository, 'findByName').mockResolvedValue({ id_category: 1, name_category: "Doces" } as any);
-            
+
             const spyUpdate = jest.spyOn(CategoryRepository, 'updateCategory').mockResolvedValue([1] as any);
 
             await CategoryService.updateCategory(1, catMesmoNome);

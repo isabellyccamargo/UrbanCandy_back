@@ -1,11 +1,11 @@
-import People from "../Models/People.js";
-import Users from "../Models/Users.js";
+import People from "../models/People.js";
+import Users from "../models/Users.js";
 
 class PeopleRepository {
 
     async findAllPeople(limit: number, offset: number) {
         return await People.findAndCountAll({
-            limit: limit,   
+            limit: limit,
             offset: offset,
             include: [{ model: Users, as: 'user', attributes: ['email', 'administrator'] }],
             order: [['id_people', 'ASC']]

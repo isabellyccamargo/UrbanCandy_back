@@ -1,7 +1,7 @@
-import ProductRepository from "../Repositories/ProductRepository.js";
-import CategoryRepository from "../Repositories/CategoryRepository.js";
-import Products from "../Models/Products.js";
-import { ApiException } from "../Exception/ApiException.js";
+import ProductRepository from "../repositories/ProductRepository.js";
+import CategoryRepository from "../repositories/CategoryRepository.js";
+import Products from "../models/Products.js";
+import { ApiException } from "../exception/ApiException.js";
 
 interface ProductList {
     rows: Products[];

@@ -1,7 +1,7 @@
 import { jest, describe, test, expect, beforeEach } from '@jest/globals';
 import bcrypt from "bcrypt";
-import UserService from "../src/Service/UserService.js";
-import UserRepository from "../src/Repositories/UserRepository.js";
+import UserService from "../src/service/UserService.js";
+import UserRepository from "../src/repositories/UserRepository.js";
 
 describe("UserService", () => {
 
@@ -14,13 +14,13 @@ describe("UserService", () => {
         test("deve lançar erro para e-mail com formato inválido", async () => {
             const dados: any = { email: "email-errado", cpf: "12345678901", password: "Senha123" };
             await expect(UserService.createUser(dados))
-                .rejects.toThrow("O e-mail deve conter @ e terminar com .com."); 
+                .rejects.toThrow("O e-mail deve conter @ e terminar com .com.");
         });
 
         test("deve lançar erro se a senha não tiver letras e números ou for curta", async () => {
             const dados: any = { email: "teste@gmail.com", cpf: "12345678901", password: "123" };
             await expect(UserService.createUser(dados))
-                .rejects.toThrow("A senha deve ter no mínimo 8 caracteres"); 
+                .rejects.toThrow("A senha deve ter no mínimo 8 caracteres");
         });
 
         test("deve impedir cadastro com e-mail duplicado", async () => {
@@ -70,11 +70,11 @@ describe("UserService", () => {
     });
 
     describe("Atualização (Update)", () => {
-      test("deve impedir a alteração de e-mail", async () => {
-    const dadosUpdate = { email: "novo@gmail.com" };
-    await expect(UserService.updateUser(1, dadosUpdate, {}))
-        .rejects.toThrow("EMAIL_CHANGE_NOT_ALLOWED");
-});
+        test("deve impedir a alteração de e-mail", async () => {
+            const dadosUpdate = { email: "novo@gmail.com" };
+            await expect(UserService.updateUser(1, dadosUpdate, {}))
+                .rejects.toThrow("EMAIL_CHANGE_NOT_ALLOWED");
+        });
 
         test("deve encriptar a nova senha ao atualizar", async () => {
             const dadosUpdate = { password: "NovaSenha123" };
