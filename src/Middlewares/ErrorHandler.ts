@@ -1,4 +1,4 @@
-// Aqui ele vai capturar qualquer erro de API e retornar uma resposta padronizada para o cliente.
+// Aqui ele vai capturar qualquer erro de API e retornar uma resposta padronizada para o cliente.  
 
 import { type Request, type Response, type NextFunction } from "express";
 import { ApiException } from "../exception/ApiException.js";

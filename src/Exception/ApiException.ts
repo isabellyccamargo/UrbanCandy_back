@@ -1,5 +1,4 @@
-// Recebe todos os erros que podem acontecer na API, e a partir do código do erro, ele busca a mensagem correspondente no arquivo 
-// de mensagens de erro, e formata a mensagem com os parâmetros fornecidos.
+// Recebe todos os erros que podem acontecer na API, e a partir do código do erro, ele busca a mensagem correspondente e a formata com os parâmetros fornecidos.
 
 import { getErrorMessage } from "../utils/ErrorMessages.js";
 
@@ -23,7 +22,6 @@ export class ApiException extends Error {
   }
 }
 
-// Função que substitui os {}
 function formatMessage(message: string, params: ErrorParam[]): string {
 
   let formatted: string = message;

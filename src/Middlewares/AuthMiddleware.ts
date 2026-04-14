@@ -17,7 +17,6 @@ declare global {
 }
 
 async function authMiddleware(req: Request, res: Response, next: NextFunction) {
-    //É aqui que o seu Front-end enviou o token. 
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -42,7 +41,6 @@ async function authMiddleware(req: Request, res: Response, next: NextFunction) {
 
         const user = await UserRepository.findByIdUser(decoded.id);
 
-        //Se for válido, o id é salvo no req para que as rotas saibam quem esta logando.
         if (user) {
             (req).userId = decoded.id;
             return next();

@@ -19,7 +19,7 @@ interface IUserRegistration {
     name: string;
     cpf: string;
     telephone: string;
-    cep: string;
+    cep: string; 
     city: string;
     neighborhood: string;
     road: string;
