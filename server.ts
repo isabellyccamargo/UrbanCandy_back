@@ -1,12 +1,11 @@
-import express, { type Application } from "express";
-import path from "path";
-import { fileURLToPath } from "url";
-import cors from "cors";
-import publico from "./src/routes/Public.js";
-import { dataBaseConectionn } from "./src/config/Config.js";
-import { setupAssociations } from "./src/models/Associations.js";
-import { errorHandler } from "./src/middlewares/ErrorHandler.js";
-
+import express, { type Application } from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cors from 'cors';
+import publico from './src/routes/Public.js';
+import { dataBaseConectionn } from './src/config/Config.js';
+import { setupAssociations } from './src/models/Associations.js';
+import { errorHandler } from './src/middlewares/ErrorHandler.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,11 +13,13 @@ const __dirname = path.dirname(__filename);
 const server: Application = express();
 
 // 2. Configure o CORS ANTES das rotas e do express.json
-server.use(cors({
+server.use(
+  cors({
     origin: '*', // Em desenvolvimento, o '*' libera para qualquer origem (Vite, Thunder Client, etc.)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
-}));
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  })
+);
 
 dataBaseConectionn();
 setupAssociations();
@@ -35,7 +36,7 @@ server.use(publico);
 server.use(errorHandler);
 
 server.listen(3030, () => {
-    console.log("Servidor TypeScript rodando na porta 3030");
+  console.log('Servidor TypeScript rodando na porta 3030');
 });
 
 export default server;

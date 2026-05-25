@@ -1,9 +1,9 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize("urbancandy", "root", "ADMIN", {
-  host: "localhost",
-  dialect: "mysql", 
-  logging: false, 
+const sequelize = new Sequelize('urbancandy', 'root', 'ADMIN', {
+  host: 'localhost',
+  dialect: 'mysql',
+  logging: false,
 });
 
 export const dataBaseConectionn = async () => {
