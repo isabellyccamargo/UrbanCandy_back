@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "✨ Etapa 2/3: Validando formatação com Prettier..."
-npm run format:check
+npm run format
 
 if [ $? -ne 0 ]; then
   echo "❌ Prettier encontrou erros de formatação. Execute 'npm run format' para corrigir."
