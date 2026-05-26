@@ -12,3 +12,12 @@ fi
 
 echo "✅ Testes aprovados! Push permitido."
 exit 0
+echo "🧪 Executando testes E2E (Playwright)..."
+npm run test:e2e
+if [ $? -ne 0 ]; then
+  echo "❌ Testes E2E falharam! Push bloqueado."
+  echo "📋 Execute 'npm run test:e2e' localmente e corrija os erros."
+  exit 1
+fi
+
+echo "✅ Todos os testes (unitários e E2E) aprovados! Push permitido."
