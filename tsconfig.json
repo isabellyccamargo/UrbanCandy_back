@@ -3,23 +3,19 @@
     "target": "esnext",
     "module": "nodenext",
     "strict": true,
-    
-    "typeRoots": [
-      "./node_modules/@types", 
-      "./src/@types"
-    ],
-    
+
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+
     "types": ["jest"],
     "sourceMap": true,
     "declaration": true,
     "skipLibCheck": true,
-     "sourceMap": true,
+    "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
 
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
 
     "strict": true,
     "jsx": "react-jsx",
@@ -27,6 +23,6 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
 }
