@@ -90,3 +90,20 @@ Este projeto segue [Conventional Commits](https://www.conventionalcommits.org/).
 ## Contribuindo
 
 Por favor, leia [CONTRIBUTING.md](./CONTRIBUTING.md) antes de contribuir.
+
+## Ambiente de Teste Isolado para E2E
+
+Para garantir que os testes E2E não afetem dados reais, utilize um banco de dados de teste separado.
+
+1. Copie o arquivo `.env.example` para `.env` e ajuste as variáveis conforme necessário.
+2. Certifique-se de definir `DATABASE_URL_TEST` para um banco de dados exclusivo de testes (ex: `urbancandy_test`).
+3. Os testes E2E e unitários devem rodar sempre usando `DATABASE_URL_TEST`.
+4. Nunca rode testes E2E apontando para o banco de produção ou desenvolvimento!
+
+### Rodando os testes E2E
+
+```bash
+npm run test:e2e
+```
+
+Os scripts de pre-push garantem que os testes E2E passem antes de permitir push para o repositório.
